@@ -121,3 +121,4 @@
         - sensor.home_to_office
         - sensor.northern
         - sensor.piccadilly
+        - sensor.victoria

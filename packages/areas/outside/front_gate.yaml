@@ -46,6 +46,15 @@ cover:
           state: 'on'
         - service: rest_command.trigger_front_gate
 
+script:
+  driveway_lights_on:
+    sequence:
+      - service: light.turn_on
+        entity_id: light.driveway
+      - delay: "00:{{ off_delay }}:00"
+      - service: light.turn_off
+        entity_id: light.driveway
+
 automation:
   - alias: Front gate KNX event
     initial_state: 'on'
@@ -156,12 +165,11 @@ automation:
       platform: webhook
       webhook_id: front_gate_light
     action:
-      - service: light.turn_on
-        entity_id: light.driveway
-      - delay:
-          minutes: 2
-      - service: light.turn_off
-        entity_id: light.driveway
+      - service: homeassistant.turn_on
+        entity_id: script.driveway_lights_on
+        data_template:
+          variables:
+            off_delay: 3
 
   - alias: Front gate driveway lights on when dark
     initial_state: 'on'
@@ -180,9 +188,8 @@ automation:
           entity_id: light.driveway
           state: 'off'
     action:
-      - service: light.turn_on
-        entity_id: light.driveway
-      - delay:
-          minutes: 2
-      - service: light.turn_off
-        entity_id: light.driveway
+      - service: homeassistant.turn_on
+        entity_id: script.driveway_lights_on
+        data_template:
+          variables:
+            off_delay: 3

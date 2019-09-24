@@ -1,0 +1,50 @@
+homeassistant:
+  customize:
+    sensor.outside_temperature:
+    icon: mdi:thermometer
+
+light:
+  - platform: knx
+    name: Driveway
+    address: 1/1/129
+    state_address: 1/2/129
+
+  - platform: knx  
+    name: Porch
+    address: 1/1/130
+    state_address: 1/2/130
+
+  - platform: knx
+    name: Front house
+    address: 1/1/131
+    state_address: 1/2/131
+
+  - platform: knx
+    name: Side passage
+    address: 1/1/132
+    state_address: 1/2/132
+
+  - platform: knx
+    name: Patio
+    address: 1/1/149
+    state_address: 1/2/149
+
+  - platform: group
+    name: Outside
+    entities:
+      - light.driveway
+      - light.front_house
+      - light.porch
+      - light.side_passage
+      - light.patio
+
+sensor:
+  - platform: knx
+    name: Outside Temperature
+    type: temperature
+    state_address: 6/1/0
+
+  - platform: knx
+    name: Outside Brightness
+    type: brightness
+    state_address: 6/6/1

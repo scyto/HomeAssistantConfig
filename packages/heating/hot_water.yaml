@@ -1,0 +1,146 @@
+switch:
+  platform: knx
+  name: Hot water
+  address: 7/4/21
+  state_address: 8/4/21
+
+input_datetime:
+  weekdays_am_hot_water_on:
+    name: Turn on
+    has_date: false
+    has_time: true
+
+  weekdays_am_hot_water_off:
+    name: Turn off
+    has_date: false
+    has_time: true
+
+  weekdays_pm_hot_water_on:
+    name: Turn on
+    has_date: false
+    has_time: true
+
+  weekdays_pm_hot_water_off:
+    name: Turn off
+    has_date: false
+    has_time: true
+
+  weekends_am_hot_water_on:
+    name: Turn on
+    has_date: false
+    has_time: true
+
+  weekends_am_hot_water_off:
+    name: Turn off
+    has_date: false
+    has_time: true
+
+  weekends_pm_hot_water_on:
+    name: Turn on
+    has_date: false
+    has_time: true
+
+  weekends_pm_hot_water_off:
+    name: Turn off
+    has_date: false
+    has_time: true
+
+input_boolean:
+  hot_water_schedule:
+    name: Enable schedule
+    icon: mdi:calendar-clock
+
+automation:
+  - alias: Weekdays hot water on
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      - platform: template
+        value_template: "{{ states('sensor.time') == state_attr('input_datetime.weekdays_am_hot_water_on', 'timestamp') | int | timestamp_custom('%H:%M', false) }}"
+      - platform: template
+        value_template: "{{ states('sensor.time') == state_attr('input_datetime.weekdays_pm_hot_water_on', 'timestamp') | int | timestamp_custom('%H:%M', false) }}"
+    condition:
+      condition: and
+      conditions:
+        - condition: time
+          weekday:
+          - mon
+          - tue
+          - wed
+          - thu
+          - fri
+        - condition: state
+          entity_id: input_boolean.hot_water_schedule
+          state: 'on'      
+    action:
+      - service: switch.turn_on
+        entity_id: switch.hot_water 
+
+  - alias: Weekdays hot water off
+    initial_state: 'on'
+    hide_entity: true
+    trigger:     
+      - platform: template
+        value_template: "{{ states('sensor.time') == state_attr('input_datetime.weekdays_am_hot_water_off', 'timestamp') | int | timestamp_custom('%H:%M', false) }}"
+      - platform: template
+        value_template: "{{ states('sensor.time') == state_attr('input_datetime.weekdays_pm_hot_water_off', 'timestamp') | int | timestamp_custom('%H:%M', false) }}"
+    condition:
+      condition: and
+      conditions:
+        - condition: time
+          weekday:
+          - mon
+          - tue
+          - wed
+          - thu
+          - fri
+        - condition: state
+          entity_id: input_boolean.hot_water_schedule
+          state: 'on'
+    action:
+      - service: switch.turn_off
+        entity_id: switch.hot_water
+
+  - alias: Weekends hot water on
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      - platform: template
+        value_template: "{{ states('sensor.time') == state_attr('input_datetime.weekends_am_hot_water_on', 'timestamp') | int | timestamp_custom('%H:%M', false) }}"
+      - platform: template
+        value_template: "{{ states('sensor.time') == state_attr('input_datetime.weekends_pm_hot_water_on', 'timestamp') | int | timestamp_custom('%H:%M', false) }}"
+    condition:
+      condition: and
+      conditions:
+        - condition: time
+          weekday:
+          - sat
+          - sun
+        - condition: state
+          entity_id: input_boolean.hot_water_schedule
+          state: 'on'      
+    action:
+      - service: switch.turn_on
+        entity_id: switch.hot_water  
+
+  - alias: Weekends hot water off
+    initial_state: 'on'
+    hide_entity: true
+    trigger:     
+      - platform: template
+        value_template: "{{ states('sensor.time') == state_attr('input_datetime.weekends_am_hot_water_off', 'timestamp') | int | timestamp_custom('%H:%M', false) }}"
+      - platform: template
+        value_template: "{{ states('sensor.time') == state_attr('input_datetime.weekends_pm_hot_water_off', 'timestamp') | int | timestamp_custom('%H:%M', false) }}"
+    condition:
+      condition: and
+      conditions:
+        - condition: time
+          weekday:
+          - sat
+          - sun
+        - condition: state
+          entity_id: input_boolean.hot_water_schedule
+          state: 'on'
+    action:
+      - service: switch.turn_off
+        entity_id: switch.hot_water

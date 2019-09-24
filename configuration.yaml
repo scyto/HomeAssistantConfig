@@ -1,0 +1,36 @@
+homeassistant:
+  name: Saturn
+  latitude: !secret home_latitude
+  longitude: !secret home_longitude
+  elevation: 0
+  unit_system: metric
+  time_zone: !secret home_timezone
+  packages: !include_dir_named packages
+  whitelist_external_dirs:
+    - /tmp
+    - /config
+http:
+  ip_ban_enabled: true
+  login_attempts_threshold: 10
+
+frontend:
+  themes: !include_dir_named themes/
+lovelace:
+  mode: yaml
+panel_iframe:
+  esphome:
+    title: ESP Home
+    icon: mdi:chip
+    url: http://192.168.1.30:6052/
+
+system_health:
+config:
+logger:
+recorder:
+history: !include history.yaml
+cloud:
+stream:
+map:
+
+automation: !include_dir_merge_list automations/
+zone: !include zones.yaml

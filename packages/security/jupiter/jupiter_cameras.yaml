@@ -1,0 +1,13 @@
+camera:
+  - platform: generic
+    name: Jupiter Hallway
+    still_image_url: http://192.168.50.12/image/jpeg.cgi
+    username: !secret dlink_username
+    password: !secret dlink_password
+    
+  - platform: generic
+    name: Jupiter Lounge
+    still_image_url: http://192.168.50.13/image/jpeg.cgi
+    username: !secret dlink_username
+    password: !secret dlink_password
+    

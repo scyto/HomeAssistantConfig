@@ -1,0 +1,123 @@
+- type: vertical-stack
+  cards:
+    - type: horizontal-stack
+      cards:
+        - type: picture-elements
+          image: /local/users/alexey.jpg
+          elements:
+            - type: state-label
+              entity: device_tracker.alexey_owntracks
+              style:
+                left: 0
+                bottom: 0
+                width: 100%
+                padding: 0
+                transform: initial
+                font-size: 14px
+                line-height: 14px
+                color: white
+            - type: state-icon
+              entity: binary_sensor.alexey_mi_band
+              style:
+                left: 60%
+                bottom: 0
+                transform: initial
+                --paper-item-icon-color: white
+            - type: state-icon
+              entity: binary_sensor.alexey_presence
+              style:
+                left: 75%
+                bottom: 0
+                transform: initial
+                --paper-item-icon-color: white
+
+        - type: picture-elements
+          image: /local/users/marina.jpg
+          elements:
+            - type: state-label
+              entity: device_tracker.marina_owntracks
+              style:
+                left: 0
+                bottom: 0
+                width: 100%
+                padding: 0
+                transform: initial
+                font-size: 14px
+                line-height: 14px
+                color: white
+            - type: state-icon
+              entity: binary_sensor.marina_presence
+              style:
+                left: 75%
+                bottom: 0
+                transform: initial
+                --paper-item-icon-color: white
+
+        - type: picture-elements
+          image: /local/users/elena.jpg
+          elements:
+            - type: state-label
+              entity: person.elena
+              style:
+                left: 0
+                bottom: 0
+                width: 100%
+                padding: 0
+                transform: initial
+                font-size: 14px
+                line-height: 14px
+                color: white
+
+    - type: picture-entity
+      entity: camera.front_gate
+      camera_view: live
+      aspect_ratio: 4x3
+      show_name: false
+      show_state: false
+      
+    - type: horizontal-stack
+      cards:
+        - type: custom:button-card
+          entity: cover.front_gate
+          show_state: true
+          styles:
+            card:
+              - font-size: 12px
+
+        - type: custom:button-card
+          entity: cover.rear_gate
+          show_state: true
+          styles:
+            card:
+              - font-size: 12px
+
+        - type: custom:button-card
+          entity: light.outside
+          name: Lights
+          show_state: true
+          styles:
+            card:
+              - font-size: 12px
+
+        - type: custom:button-card
+          entity: input_boolean.silent_mode
+          name: Silent mode
+          show_state: true
+          styles:
+            card:
+              - font-size: 12px
+
+- type: vertical-stack
+  cards:
+    - type: weather-forecast
+      entity: weather.dark_sky
+      mode: daily
+      name: " "
+
+    - type: entities
+      title: Transport
+      show_header_toggle: false
+      entities:
+        - sensor.home_to_office
+        - sensor.northern
+        - sensor.piccadilly

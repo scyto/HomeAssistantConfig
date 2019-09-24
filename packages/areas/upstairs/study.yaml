@@ -1,0 +1,31 @@
+light:
+  - platform: knx
+    name: Study spotlights
+    address: 1/1/81
+    state_address: 1/2/81 
+    
+  - platform: knx
+    name: Study wall lights
+    address: 1/1/82
+    state_address: 1/2/82  
+    
+  - platform: knx
+    name: Study pendant
+    address: 1/1/83
+    state_address: 1/2/83
+
+climate:
+  - platform: knx
+    name: Study
+    temperature_address: 4/6/14
+    target_temperature_state_address: 4/5/14
+    setpoint_shift_address: 3/3/14
+    setpoint_shift_state_address: 4/3/14
+    operation_mode_address: 3/1/14
+    controller_status_state_address: 4/0/14
+
+sensor:
+  - platform: knx
+    name: Study heat demand  
+    type: percent
+    state_address: 4/1/14 

@@ -1,0 +1,11 @@
+- type: entities
+  entities:
+    - type: custom:mini-graph-card
+      name: BT Infinity
+      icon: mdi:earth
+      group: true
+      entities:
+        - sensor.speedtest_download
+        - sensor.speedtest_upload 
+        - sensor.speedtest_ping
+    - sensor.public_ip

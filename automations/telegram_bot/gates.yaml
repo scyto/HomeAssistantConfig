@@ -1,0 +1,57 @@
+- alias: Telegram open front gate
+  initial_state: 'on'
+  hide_entity: true
+  trigger:
+    platform: event
+    event_type: telegram_callback
+    event_data:
+      data: "/open_front_gate"
+  action:
+    - service: telegram_bot.answer_callback_query
+      data_template:
+        callback_query_id: "{{ trigger.event.data.id }}"
+        message: "Sending command to front gate..."
+    - service: cover.open_cover
+      entity_id: cover.front_gate
+      
+- alias: Telegram toggle front gate
+  initial_state: 'on'
+  hide_entity: true
+  trigger:
+    platform: event
+    event_type: telegram_callback
+    event_data:
+      data: "/toggle_front_gate"
+  action:
+    - service: telegram_bot.answer_callback_query
+      data_template:
+        callback_query_id: "{{ trigger.event.data.id }}"
+        message: "Sending command to front gate..."
+    - service_template: >-
+        {% if is_state('cover.front_gate', 'open') %}
+          cover.close_cover
+        {% else %}
+          cover.open_cover
+        {% endif %}
+      entity_id: cover.front_gate
+
+- alias: Telegram toggle rear gate
+  initial_state: 'on'
+  hide_entity: true
+  trigger:
+    platform: event
+    event_type: telegram_callback
+    event_data:
+      data: "/toggle_rear_gate"
+  action:
+    - service: telegram_bot.answer_callback_query
+      data_template:
+        callback_query_id: "{{ trigger.event.data.id }}"
+        message: "Sending command to rear gate..."
+    - service_template: >-
+        {% if is_state('cover.front_gate', 'open') %}
+          cover.close_cover
+        {% else %}
+          cover.open_cover
+        {% endif %}
+      entity_id: cover.front_gate

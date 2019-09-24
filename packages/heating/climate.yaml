@@ -1,0 +1,206 @@
+homeassistant:
+  customize_glob:
+    sensor.*_heat_demand:
+      icon: mdi:radiator
+
+sensor:
+  - platform: template
+    sensors:
+      downstairs_temperature:
+        friendly_name: Downstairs Temperature
+        unit_of_measurement: "°C"
+        value_template: >-
+          {{ (((state_attr('climate.hallway', 'current_temperature') | float)
+              + (state_attr('climate.av_room', 'current_temperature') | float)
+              + (state_attr('climate.lounge', 'current_temperature') | float)
+              + (state_attr('climate.dining_room', 'current_temperature') | float)
+              + (state_attr('climate.kitchen', 'current_temperature') | float)
+              + (state_attr('climate.utility_room', 'current_temperature') | float)) / 6) | round(2) }}
+              
+      upstairs_temperature:
+        friendly_name: Upstairs Temperature
+        unit_of_measurement: "°C"
+        value_template: >-
+          {{ (((state_attr('climate.landing', 'current_temperature') | float)
+              + (state_attr('climate.master_bedroom', 'current_temperature') | float)
+              + (state_attr('climate.master_bathroom', 'current_temperature') | float)
+              + (state_attr('climate.kids_room', 'current_temperature') | float)
+              + (state_attr('climate.study', 'current_temperature') | float)
+              + (state_attr('climate.guest_room', 'current_temperature') | float)
+              + (state_attr('climate.bathroom', 'current_temperature') | float)) / 7) | round(2) }}
+
+binary_sensor:
+  - platform: knx
+    name: Boiler
+    state_address: 8/4/1
+
+  - platform: knx
+    name: Downstrairs UFH Pump
+    state_address: 8/3/1
+
+  - platform: knx
+    name: Upstairs UFH Pump
+    state_address: 8/3/2
+
+input_select:
+  climate_mode:
+    name: Preset mode
+    icon: mdi:thermostat
+    options:
+      - Comfort
+      - Away
+      - Sleep
+      - Eco
+
+input_datetime:
+  weekdays_comfort:
+    name: Comfort
+    has_date: false
+    has_time: true
+  
+  weekdays_sleep:
+    name: Sleep
+    has_date: false
+    has_time: true
+
+  weekends_comfort:
+    name: Comfort
+    has_date: false
+    has_time: true
+
+  weekends_sleep:
+    name: Sleep
+    has_date: false
+    has_time: true
+
+input_boolean:
+  heating_schedule:
+    name: Enable schedule
+    icon: mdi:calendar-clock
+
+script:
+  set_climate_mode:
+    sequence:
+      service: climate.set_preset_mode
+      data_template:
+        preset_mode: "{{ mode }}"
+        entity_id:
+          - climate.hallway
+          - climate.av_room
+          - climate.lounge
+          - climate.dining_room
+          - climate.kitchen
+          - climate.utility_room
+          - climate.landing
+          - climate.master_bedroom
+          - climate.master_bathroom
+          - climate.kids_room
+          - climate.study
+          - climate.guest_room
+          - climate.bathroom
+
+automation:
+  - alias: Set climate mode for all contollers
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: state
+      entity_id: input_select.climate_mode
+    action:
+      service: script.set_climate_mode
+      data_template:
+        mode: '{{ trigger.to_state.state | lower }}'
+
+  - alias: Weekdays climate to comfort
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: template
+      value_template: "{{ states('sensor.time') == state_attr('input_datetime.weekdays_comfort', 'timestamp') | int | timestamp_custom('%H:%M', false) }}"
+    condition:
+      condition: and
+      conditions:
+        - condition: time
+          weekday:
+          - mon
+          - tue
+          - wed
+          - thu
+          - fri
+        - condition: state
+          entity_id: input_boolean.heating_schedule
+          state: 'on'
+    action:
+      service: input_select.select_option
+      data:
+        entity_id: input_select.climate_mode
+        option: "Comfort"
+
+  - alias: Weekdays climate to sleep
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: template
+      value_template: "{{ states('sensor.time') == state_attr('input_datetime.weekdays_sleep', 'timestamp') | int | timestamp_custom('%H:%M', false) }}"
+    condition:
+      condition: and
+      conditions:
+        - condition: time
+          weekday:
+          - mon
+          - tue
+          - wed
+          - thu
+          - fri
+        - condition: state
+          entity_id: input_boolean.heating_schedule
+          state: 'on'
+    action:
+      service: input_select.select_option
+      data:
+        entity_id: input_select.climate_mode
+        option: "Sleep"
+
+  - alias: Weekends climate to comfort
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: template
+      value_template: "{{ states('sensor.time') == state_attr('input_datetime.weekends_comfort', 'timestamp') | int | timestamp_custom('%H:%M', false) }}"
+    condition:
+      condition: and
+      conditions:
+        - condition: time
+          weekday:
+          - sat
+          - sun
+        - condition: state
+          entity_id: input_boolean.heating_schedule
+          state: 'on'
+    action:
+      service: input_select.select_option
+      data:
+        entity_id: input_select.climate_mode
+        option: "Comfort"
+
+  - alias: Weekends climate to sleep
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: template
+      value_template: "{{ states('sensor.time') == state_attr('input_datetime.weekends_sleep', 'timestamp') | int | timestamp_custom('%H:%M', false) }}"
+    condition:
+      condition: and
+      conditions:
+        - condition: time
+          weekday:
+          - sat
+          - sun
+        - condition: state
+          entity_id: input_boolean.heating_schedule
+          state: 'on'
+    action:
+      service: input_select.select_option
+      data:
+        entity_id: input_select.climate_mode
+        option: "Sleep"  

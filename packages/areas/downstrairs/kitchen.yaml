@@ -1,0 +1,36 @@
+light:
+  - platform: knx
+    name: Kitchen centre pendant 
+    address: 1/1/9
+    state_address: 1/2/9
+
+  - platform: knx  
+    name: Kitchen spotlights 
+    address: 1/1/10
+    state_address: 1/2/10
+
+  - platform: knx
+    name: Kitchen island pendants 
+    address: 1/1/11
+    state_address: 1/2/11
+    
+  - platform: knx  
+    name: Kitchen wall lights 
+    address: 1/1/12
+    state_address: 1/2/12
+
+climate:
+  - platform: knx
+    name: Kitchen
+    temperature_address: 4/6/3
+    target_temperature_state_address: 4/5/3
+    setpoint_shift_address: 3/3/3
+    setpoint_shift_state_address: 4/3/3
+    operation_mode_address: 3/1/3
+    controller_status_state_address: 4/0/3
+
+sensor:
+  - platform: knx
+    name: Kitchen heat demand  
+    type: percent
+    state_address: 4/1/3  

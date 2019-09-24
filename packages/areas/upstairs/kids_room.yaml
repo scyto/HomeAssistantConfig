@@ -1,0 +1,21 @@
+light:
+  - platform: knx
+    name: Kids room spotlights
+    address: 1/1/73
+    state_address: 1/2/73
+
+climate:
+  - platform: knx
+    name: Kids room
+    temperature_address: 4/6/12
+    target_temperature_state_address: 4/5/12
+    setpoint_shift_address: 3/3/12
+    setpoint_shift_state_address: 4/3/12
+    operation_mode_address: 3/1/12
+    controller_status_state_address: 4/0/12
+
+sensor:
+  - platform: knx
+    name: Kids room heat demand  
+    type: percent
+    state_address: 4/1/12

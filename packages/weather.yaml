@@ -1,0 +1,53 @@
+weather:
+  - platform: darksky
+    api_key: !secret darksky_api_key
+    mode: daily
+
+sensor:
+  - platform: darksky
+    api_key: !secret darksky_api_key
+    scan_interval:
+      minutes: 60
+    forecast:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+    monitored_conditions:
+      - summary
+      - daily_summary
+      - temperature
+      - apparent_temperature
+      - temperature_high
+      - temperature_low
+      - humidity
+      - precip_probability
+      - precip_intensity
+      - precip_type
+      - wind_speed
+      - wind_bearing
+      - pressure
+      - icon
+
+  - platform: template
+    sensors:
+      dark_sky_summary_customized:
+        friendly_name: Summary
+        value_template: "{{ states.sensor.dark_sky_summary.state }}"
+        icon_template: >-
+          {% set icons = {
+            'clear-day': 'mdi:weather-sunny',
+            'clear-night': 'mdi:weather-night',
+            'cloudy': 'mdi:weather-cloudy',
+            'rain': 'mdi:weather-pouring',
+            'sleet': 'mdi:weather-snowy-rain',
+            'snow': 'mdi:weather-snowy',
+            'wind': 'mdi:weather-windy',
+            'fog': 'mdi:weather-fog',
+            'partly-cloudy-day': 'mdi:weather-partlycloudy',
+            'partly-cloudy-night': 'mdi:weather-partlycloudy'
+          } %}
+          {{ icons[states.sensor.dark_sky_icon.state] if states.sensor.dark_sky_icon.state in icons else 'mdi:weather-cloudy' }}

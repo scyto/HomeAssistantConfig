@@ -1,0 +1,15 @@
+- url: /local/custom-cards/card-tools.js
+  type: js
+- url: /local/custom-cards/popup-card.js
+  type: js
+- url: /local/custom-cards/button-card.js
+  type: module
+- url: /local/custom-cards/fold-entity-row.js
+  type: js
+- url: /local/custom-cards/slider-entity-row.js
+  type: module
+- url: /local/custom-cards/mini-graph-card-bundle.js
+  type: module
+- url: /local/custom-cards/mini-media-player-bundle.js
+  type: module
+  

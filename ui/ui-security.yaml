@@ -1,0 +1,76 @@
+- type: vertical-stack
+  cards:
+    - type: entities
+      title: Security
+      show_header_toggle: false
+      entities:
+        - input_boolean.alarm_full
+        - input_boolean.alarm_night
+        - input_boolean.alarm_outside
+        - type: divider
+          style:
+            height: 1px
+            background: '#dcdcdc'
+        - input_boolean.indoor_motion_notify
+        - input_boolean.porch_motion_notify
+        - input_boolean.outdoor_motion_notify_video
+        - input_boolean.presence_simulation
+
+    - type: entities
+      title: Sensors
+      show_header_toggle: false
+      entities:
+        - type: custom:fold-entity-row
+          head: 
+            type: section
+            label: Contact
+          open: true
+          items:
+            - binary_sensor.front_door
+            - binary_sensor.lounge_window
+            - binary_sensor.master_bedroom_window
+            - binary_sensor.study_window
+        - type: custom:fold-entity-row
+          head: 
+            type: section
+            label: Motion
+          open: false
+          items:
+            - binary_sensor.porch_motion
+            - binary_sensor.hallway_motion
+            - binary_sensor.av_room_motion
+            - binary_sensor.toilet_motion
+            - binary_sensor.lounge_motion
+            - binary_sensor.staircase_motion
+            - binary_sensor.landing_motion
+            - binary_sensor.master_bathroom_motion
+
+    - type: entities
+      title: Smoke detectors
+      show_header_toggle: false
+      entities:
+        - entity: binary_sensor.kitchen_nest_protect_online
+          icon: mdi:smoke-detector
+          name: Kitchen
+        - entity: binary_sensor.upstairs_nest_protect_online
+          icon: mdi:smoke-detector
+          name: Upstairs
+
+- type: entities
+  title: Neptune
+  show_header_toggle: false
+  entities:
+    - input_boolean.neptune_alarm_full
+    - input_boolean.neptune_alarm_night
+    - type: divider
+      style:
+        height: 1px
+        background: '#dcdcdc'
+    - entity: input_boolean.neptune_motion_notify_video
+      name: Notify on outdoor motion
+    - input_boolean.neptune_presence_simulation
+    - type: section
+      label: Lights
+    - light.neptune_lounge
+    - light.neptune_guest_room
+    - light.neptune_small_guest_room

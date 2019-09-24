@@ -1,0 +1,61 @@
+light:
+  - platform: knx
+    name: Hallway entrance spotlights
+    address: 1/1/1
+    state_address: 1/2/1
+
+  - platform: knx
+    name: Hallway corridor spotlights
+    address: 1/1/2
+    state_address: 1/2/2
+
+  - platform: group
+    name: Hallway spotlights
+    entities:
+      - light.hallway_entrance_spotlights
+      - light.hallway_corridor_spotlights
+
+climate:
+  - platform: knx
+    name: Hallway
+    temperature_address: 4/6/1
+    target_temperature_state_address: 4/5/1
+    setpoint_shift_address: 3/3/1
+    setpoint_shift_state_address: 4/3/1
+    operation_mode_address: 3/1/1
+    controller_status_state_address: 4/0/1
+
+sensor:
+  - platform: knx
+    name: Hallway heat demand  
+    type: percent
+    state_address: 4/1/1 
+
+automation:
+  - alias: Hallway lights on
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: state
+      entity_id: binary_sensor.hallway_motion
+      from: 'off'
+      to: 'on'    
+    action:
+      - service: light.turn_on
+        entity_id: light.hallway_spotlights
+      - service: rest_command.wake_touchpanel
+
+  - alias: Hallway lights off
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: state
+      entity_id: binary_sensor.hallway_motion
+      from: 'on'
+      to: 'off'      
+      for:
+        minutes: 1
+    action:
+      service: light.turn_off
+      entity_id: light.hallway_spotlights
+

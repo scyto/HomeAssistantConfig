@@ -1,0 +1,55 @@
+homeassistant:
+  customize:
+    input_boolean.silent_mode:
+      icon: mdi:bell-off
+
+input_boolean:
+  silent_mode:
+    name: Silent mode
+
+media_player:
+  platform: casatunes
+  name: CasaTunes
+  host: 192.168.1.31
+
+rest_command:
+  casatunes_chime:
+    url: "http://192.168.1.31:8735/api/v1/system/doorbell/chimes/{{ chime }}?preWait=3&postWait=2"
+
+  casatunes_doorbell:
+    url: "http://192.168.1.31:8735/api/v1/system/doorbell"
+
+  casatunes_tts:
+    url: "http://192.168.1.31:8735/api/v1/system/tts"
+    method: POST
+    payload: '{"input": "{{ message }}", "voice": "en-GB-Wavenet-A", "preWait": 3, "postWait": 2, "volume": 80}'
+    content_type: 'application/json; charset=utf-8'
+
+script:
+  doorbell:
+    alias: Doorbell
+    sequence:
+      - condition: state
+        entity_id: input_boolean.silent_mode
+        state: 'off'
+      - service: rest_command.casatunes_doorbell
+
+  chime:
+    alias: Chime
+    sequence:
+      - condition: state
+        entity_id: input_boolean.silent_mode
+        state: 'off'
+      - service: rest_command.casatunes_chime
+        data_template:
+          chime: "{{ chime }}"
+
+  tts:
+    alias: TTS
+    sequence:
+      - condition: state
+        entity_id: input_boolean.silent_mode
+        state: 'off'
+      - service: rest_command.casatunes_tts
+        data_template:
+          message: "{{ message }}"

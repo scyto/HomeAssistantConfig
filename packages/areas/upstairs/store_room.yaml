@@ -1,0 +1,5 @@
+light:
+  - platform: knx
+    name: Store room pendant
+    address: 1/1/89
+    state_address: 1/2/89

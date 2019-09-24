@@ -1,0 +1,74 @@
+- alias: Telegram menu
+  initial_state: 'on'
+  hide_entity: true
+  trigger:
+    platform: event
+    event_type: telegram_command
+    event_data:
+      command: "/menu"
+  action:
+    - service: telegram_bot.send_message
+      data_template:
+        target: "{{ trigger.event.data.chat_id }}"
+        message: >-
+          {{"\U0001F3E0"}} Main menu
+
+          {{"\U0000202F" * 74}}{{"\U0000FEFF"}}
+        inline_keyboard:
+          - "\U0001F504 Reload:/menu_callback"
+          - "\U0001F4A1 Lights:/lights, \U00002744 Climate:/climate"
+          - "\U0001F4FA Devices:/devices, \U0001F4F9 Cameras:/cameras"
+          - "\U0001F513 Front gate:/toggle_front_gate, \U0001F513 Rear gate:/toggle_rear_gate"
+
+- alias: Telegram menu callback
+  initial_state: 'on'
+  hide_entity: true
+  trigger:
+    platform: event
+    event_type: telegram_callback
+    event_data:
+      data: "/menu_callback"
+  action:
+    - service: telegram_bot.answer_callback_query
+      data_template:
+        callback_query_id: "{{ trigger.event.data.id }}"
+        message: ""
+    - service: telegram_bot.edit_message
+      data_template:
+        message_id: "{{ trigger.event.data.message.message_id }}"
+        chat_id: "{{ trigger.event.data.chat_id }}"
+        message: >-
+          {{"\U0001F3E0"}} Main menu
+
+          {{"\U0000202F" * 74}}{{"\U0000FEFF"}}
+        inline_keyboard:
+          - "\U0001F504 Reload:/menu_callback"
+          - "\U0001F4A1 Lights:/lights, \U00002744 Climate:/climate"
+          - "\U0001F4FA Devices:/devices, \U0001F4F9 Cameras:/cameras"
+          - "\U0001F513 Front gate:/toggle_front_gate, \U0001F513 Rear gate:/toggle_rear_gate"
+
+- alias: Telegram delete message
+  initial_state: 'on'
+  hide_entity: true
+  trigger:
+    - platform: event
+      event_type: telegram_callback
+      event_data:
+        data: "/delete_msg"
+  action:
+    - service: telegram_bot.answer_callback_query
+      data_template:
+        callback_query_id: "{{ trigger.event.data.id }}"
+        message: ""
+    - service: telegram_bot.delete_message
+      data_template:
+        message_id: "{{ trigger.event.data.message.message_id }}"
+        chat_id: "{{ trigger.event.data.chat_id }}" 
+
+
+
+
+
+
+
+

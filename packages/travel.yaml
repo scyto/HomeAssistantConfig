@@ -1,0 +1,23 @@
+homeassistant:
+  customize:
+    sensor.home_to_office:
+      icon: mdi:av-timer
+      
+    sensor.office_to_home:
+      icon: mdi:av-timer
+
+sensor:
+  - platform: google_travel_time
+    name: Home to Office
+    api_key: !secret google_api_key
+    origin: zone.home
+    destination: zone.office
+    options:
+      mode: transit
+      transit_mode: subway
+
+  - platform: london_underground
+    line:
+      - Northern
+      - Piccadilly
+      - Victoria

@@ -1,0 +1,146 @@
+switch:
+  platform: knx
+  name: Towel rails
+  address: 7/4/22
+  state_address: 8/4/22
+
+input_datetime:
+  weekdays_am_towel_rails_on:
+    name: Turn on
+    has_date: false
+    has_time: true
+
+  weekdays_am_towel_rails_off:
+    name: Turn off
+    has_date: false
+    has_time: true
+
+  weekdays_pm_towel_rails_on:
+    name: Turn on
+    has_date: false
+    has_time: true
+
+  weekdays_pm_towel_rails_off:
+    name: Turn off
+    has_date: false
+    has_time: true
+
+  weekends_am_towel_rails_on:
+    name: Turn on
+    has_date: false
+    has_time: true
+
+  weekends_am_towel_rails_off:
+    name: Turn off
+    has_date: false
+    has_time: true
+
+  weekends_pm_towel_rails_on:
+    name: Turn on
+    has_date: false
+    has_time: true
+
+  weekends_pm_towel_rails_off:
+    name: Turn off
+    has_date: false
+    has_time: true
+
+input_boolean:
+  towel_rails_schedule:
+    name: Enable schedule
+    icon: mdi:calendar-clock
+
+automation:
+  - alias: Weekdays towel rails on
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      - platform: template
+        value_template: "{{ states('sensor.time') == state_attr('input_datetime.weekdays_am_towel_rails_on', 'timestamp') | int | timestamp_custom('%H:%M', false) }}"
+      - platform: template
+        value_template: "{{ states('sensor.time') == state_attr('input_datetime.weekdays_pm_towel_rails_on', 'timestamp') | int | timestamp_custom('%H:%M', false) }}"
+    condition:
+      condition: and
+      conditions:
+        - condition: time
+          weekday:
+          - mon
+          - tue
+          - wed
+          - thu
+          - fri
+        - condition: state
+          entity_id: input_boolean.towel_rails_schedule
+          state: 'on'      
+    action:
+      - service: switch.turn_on
+        entity_id: switch.towel_rails  
+
+  - alias: Weekdays towel rails off
+    initial_state: 'on'
+    hide_entity: true
+    trigger:     
+      - platform: template
+        value_template: "{{ states('sensor.time') == state_attr('input_datetime.weekdays_am_towel_rails_off', 'timestamp') | int | timestamp_custom('%H:%M', false) }}"
+      - platform: template
+        value_template: "{{ states('sensor.time') == state_attr('input_datetime.weekdays_pm_towel_rails_off', 'timestamp') | int | timestamp_custom('%H:%M', false) }}"
+    condition:
+      condition: and
+      conditions:
+        - condition: time
+          weekday:
+          - mon
+          - tue
+          - wed
+          - thu
+          - fri
+        - condition: state
+          entity_id: input_boolean.towel_rails_schedule
+          state: 'on'
+    action:
+      - service: switch.turn_off
+        entity_id: switch.towel_rails
+
+  - alias: Weekends towel rails on
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      - platform: template
+        value_template: "{{ states('sensor.time') == state_attr('input_datetime.weekends_am_towel_rails_on', 'timestamp') | int | timestamp_custom('%H:%M', false) }}"
+      - platform: template
+        value_template: "{{ states('sensor.time') == state_attr('input_datetime.weekends_pm_towel_rails_on', 'timestamp') | int | timestamp_custom('%H:%M', false) }}"
+    condition:
+      condition: and
+      conditions:
+        - condition: time
+          weekday:
+          - sat
+          - sun
+        - condition: state
+          entity_id: input_boolean.towel_rails_schedule
+          state: 'on'      
+    action:
+      - service: switch.turn_on
+        entity_id: switch.towel_rails  
+
+  - alias: Weekends towel rails off
+    initial_state: 'on'
+    hide_entity: true
+    trigger:     
+      - platform: template
+        value_template: "{{ states('sensor.time') == state_attr('input_datetime.weekends_am_towel_rails_off', 'timestamp') | int | timestamp_custom('%H:%M', false) }}"
+      - platform: template
+        value_template: "{{ states('sensor.time') == state_attr('input_datetime.weekends_pm_towel_rails_off', 'timestamp') | int | timestamp_custom('%H:%M', false) }}"
+    condition:
+      condition: and
+      conditions:
+        - condition: time
+          weekday:
+          - sat
+          - sun
+        - condition: state
+          entity_id: input_boolean.towel_rails_schedule
+          state: 'on'
+    action:
+      - service: switch.turn_off
+        entity_id: switch.towel_rails

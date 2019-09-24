@@ -1,0 +1,45 @@
+knx:
+  tunneling:
+    host: 192.168.1.11
+    port: 3671
+    local_ip: 192.168.1.30
+  rate_limit: 15
+  fire_event: true
+  fire_event_filter: ["7/7/1"]
+
+xiaomi_aqara:
+  discovery_retry: 10
+  gateways:
+    - mac: !secret aqara_gateway_1_mac
+      key: !secret aqara_gateway_1_key
+      host: 192.168.1.91
+    - mac: !secret aqara_gateway_2_mac
+      key: !secret aqara_gateway_2_key
+      host: 192.168.1.92
+
+nest:
+  client_id: !secret nest_client_id
+  client_secret: !secret nest_client_secret
+
+telegram_bot:
+  - platform: polling
+    api_key: !secret telegram_api_key
+    allowed_chat_ids:
+      - !secret telegram_chat_id_alexey
+      - !secret telegram_chat_id_marina
+      - !secret telegram_chat_id_parents
+
+homekit:
+  filter:
+    include_domains:
+      - climate
+      - switch
+      - light
+      - media_player
+      - cover
+    include_entities:
+      - input_boolean.silent_mode
+      - input_boolean.alexey_home
+      - input_boolean.marina_home
+    exclude_entities:
+      - switch.rear_gate_relay

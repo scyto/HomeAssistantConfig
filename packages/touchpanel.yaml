@@ -1,0 +1,11 @@
+rest_command:
+  wake_touchpanel:
+    url: "http://192.168.1.80:8580/?key=SPACE"
+
+switch:
+  platform: command_line
+  switches:
+    intercom:
+      friendly_name: Intercom
+      command_on: 'curl "http://192.168.1.80:8580/?cmd=intercom_on"'
+      command_off: 'curl "http://192.168.1.80:8580/?cmd=intercom_off"'

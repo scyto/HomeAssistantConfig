@@ -1,0 +1,15 @@
+light:
+  - platform: knx   
+    name: Utility room spotlights 
+    address: 1/1/45
+    state_address: 1/2/45
+
+climate:
+  - platform: knx
+    name: Utility room
+    temperature_address: 4/6/7
+    target_temperature_state_address: 4/5/7
+    setpoint_shift_address: 3/3/7
+    setpoint_shift_state_address: 4/3/7
+    operation_mode_address: 3/1/7
+    controller_status_state_address: 4/0/7

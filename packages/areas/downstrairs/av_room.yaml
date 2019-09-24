@@ -1,0 +1,59 @@
+homeassistant:
+  customize:
+    switch.av_room_extractor_fan:
+      icon: mdi:fan
+
+light:
+  - platform: knx
+    name: AV room spotlights
+    address: 1/1/5
+    state_address: 1/2/5
+
+switch:
+  - platform: knx
+    name: AV room extractor fan
+    address: 7/1/2
+
+climate:
+  - platform: knx
+    name: AV room
+    temperature_address: 4/6/2
+    target_temperature_state_address: 4/5/2
+    setpoint_shift_address: 3/3/2
+    setpoint_shift_state_address: 4/3/2
+    operation_mode_address: 3/1/2
+    controller_status_state_address: 4/0/2
+
+sensor:
+  - platform: knx
+    name: AV room heat demand  
+    type: percent
+    state_address: 4/1/2
+
+automation:
+  - alias: AV room lights on
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: state
+      entity_id: binary_sensor.av_room_motion
+      from: 'off'
+      to: 'on'    
+    action:
+      service: light.turn_on
+      entity_id: light.av_room_spotlights
+
+  - alias: AV room lights off
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: state
+      entity_id: binary_sensor.av_room_motion
+      from: 'on'
+      to: 'off'      
+      for:
+        minutes: 1
+    action:
+      service: light.turn_off
+      entity_id: light.av_room_spotlights
+

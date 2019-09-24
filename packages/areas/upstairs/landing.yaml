@@ -1,0 +1,68 @@
+light:
+  - platform: knx
+    name: Landing spotlights (left)
+    address: 1/1/65
+    state_address: 1/2/65
+
+  - platform: knx
+    name: Landing spotlights (main)
+    address: 1/1/66
+    state_address: 1/2/66
+
+  - platform: group
+    name: Landing spotlights
+    entities:
+      - light.landing_spotlights_left
+      - light.landing_spotlights_main
+
+climate:
+  - platform: knx
+    name: Landing
+    temperature_address: 4/6/11
+    target_temperature_state_address: 4/5/11
+    setpoint_shift_address: 3/3/11
+    setpoint_shift_state_address: 4/3/11
+    operation_mode_address: 3/1/11
+    controller_status_state_address: 4/0/11
+
+sensor:
+  - platform: knx
+    name: Landing heat demand  
+    type: percent
+    state_address: 4/1/11  
+
+automation:
+  - alias: Landing lights on
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: state
+      entity_id: binary_sensor.landing_motion
+      from: 'off'
+      to: 'on'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: 'sun.sun'
+          state: 'below_horizon'
+        - condition: numeric_state
+          entity_id: sensor.landing_illumination
+          below: 10
+    action:
+      service: light.turn_on
+      entity_id: light.landing_spotlights
+          
+  - alias: Landing lights off
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: state
+      entity_id: binary_sensor.landing_motion
+      from: 'on'
+      to: 'off'
+      for:
+        minutes: 1
+    action:
+      service: light.turn_off
+      entity_id: light.landing_spotlights

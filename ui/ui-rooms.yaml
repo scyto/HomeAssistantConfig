@@ -1,0 +1,254 @@
+- type: entities
+  title: Hallway
+  show_header_toggle: false
+  entities:
+    - entity: climate.hallway
+      name: Climate
+    - entity: sensor.hallway_heat_demand
+      name: Heat demand
+    - entity: light.hallway_spotlights
+      name: Spotlights
+
+- type: entities
+  title: AV room
+  show_header_toggle: false
+  entities:
+    - entity: climate.av_room
+      name: Climate
+    - entity: sensor.av_room_heat_demand
+      name: Heat demand
+    - entity: switch.av_room_extractor_fan
+      name: Extractor fan
+    - entity: light.av_room_spotlights
+      name: Spotlights
+
+- type: entities
+  title: Toilet
+  show_header_toggle: false
+  entities:
+    - entity: light.toilet_spotlight
+      name: Spotlights
+    - entity: switch.toilet_extractor_fan
+      name: Extractor fan
+
+- type: entities
+  title: Lounge
+  show_header_toggle: false
+  entities:
+    - entity: climate.lounge
+      name: Climate
+    - entity: sensor.lounge_heat_demand
+      name: Heat demand
+    - type: custom:fold-entity-row
+      head: 
+        type: section
+        label: Lights
+      open: true
+      items:
+        - type: custom:slider-entity-row
+          entity: light.lounge_floor_lamp
+          toggle: true
+          name: Floor lamp
+        - type: custom:slider-entity-row
+          entity: light.lounge_lightstrip
+          toggle: true
+          name: Light strip
+          icon: mdi:led-strip
+        - entity: light.lounge_spotlights
+          name: Spotlights
+
+- type: entities
+  title: Dining room
+  show_header_toggle: false
+  entities:
+    - entity: climate.dining_room
+      name: Climate
+    - entity: sensor.dining_room_heat_demand
+      name: Heat demand
+    - entity: light.dining_room_pendant
+      name: Pendant
+
+- type: entities
+  title: Kitchen
+  show_header_toggle: false
+  entities:
+    - entity: climate.kitchen
+      name: Climate
+    - entity: sensor.kitchen_heat_demand
+      name: Heat demand
+    - type: custom:fold-entity-row
+      head: 
+        type: section
+        label: Lights
+      open: true
+      items:
+        - entity: light.kitchen_centre_pendant
+          name: Centre pendant
+        - entity: light.kitchen_island_pendants
+          name: Island pendant
+        - entity: light.kitchen_spotlights
+          name: Spotlights
+        - entity: light.kitchen_wall_lights
+          name: Wall lights
+
+- type: entities
+  title: Utility room
+  show_header_toggle: false
+  entities:
+    - entity: climate.utility_room
+      name: Climate
+    - entity: light.utility_room_spotlights
+      name: Spotlights
+
+- type: entities
+  title: Boiler room
+  show_header_toggle: false
+  entities:
+    - entity: light.boiler_room_pendant
+      name: Pendant
+    - entity: light.boiler_room_wall_light
+      name: Wall light
+    - entity: switch.boiler_room_extractor_fan
+      name: Extractor fan
+
+- type: entities
+  title: Landing
+  show_header_toggle: false
+  entities:
+    - entity: climate.landing
+      name: Climate
+    - entity: sensor.landing_heat_demand
+      name: Heat demand
+    - type: custom:fold-entity-row
+      head: 
+        type: section
+        label: Lights
+      open: true
+      items:
+        - entity: light.staircase
+          name: Wall lights
+        - entity: light.landing_spotlights
+          name: Spotlights
+
+- type: vertical-stack
+  cards:
+    - type: entities
+      title: Master bedroom
+      show_header_toggle: false
+      entities:
+        - entity: climate.master_bedroom
+          name: Climate
+        - entity: sensor.master_bedroom_heat_demand
+          name: Heat demand
+        - type: custom:fold-entity-row
+          head: 
+            type: section
+            label: Lights
+          open: true
+          items:
+            - entity: light.master_bedroom_pendants
+              name: Pendants
+            - entity: light.master_bedroom_spotlights
+              name: Spotlights
+            - entity: light.master_bedroom_wardrobe_spotlights
+              name: Wardrobe spotlights
+
+    - type: entities
+      title: Master bathroom
+      show_header_toggle: false
+      entities:
+        - entity: climate.master_bathroom
+          name: Climate
+        - entity: sensor.master_bathroom_heat_demand
+          name: Heat demand
+        - entity: switch.master_bathroom_extractor_fan_1
+          name: Extractor fan 1
+        - entity: switch.master_bathroom_extractor_fan_2
+          name: Extractor fan 2
+        - type: custom:fold-entity-row
+          head: 
+            type: section
+            label: Lights
+          open: true
+          items:
+            - entity: light.master_bathroom_bath_wall_lights
+              name: Bath wall lights
+            - entity: light.master_bathroom_pendant
+              name: Pendant
+            - entity: light.master_bathroom_shower_wall_lights
+              name: Shower wall lights
+            - entity: light.master_bathroom_spotlights
+              name: Spotlights
+
+- type: entities
+  title: Store room
+  show_header_toggle: false
+  entities:
+    - entity: light.store_room_pendant
+      name: Pendant
+
+- type: entities
+  title: Study
+  show_header_toggle: false
+  entities:
+    - entity: climate.study
+      name: Climate
+    - entity: sensor.study_heat_demand
+      name: Heat demand
+    - type: custom:fold-entity-row
+      head: 
+        type: section
+        label: Lights
+      open: true
+      items:
+        - entity: light.study_spotlights
+          name: Spotlights
+        - entity: light.study_wall_lights
+          name: Wall lights
+        - entity: light.study_pendant
+          name: Pendant
+
+- type: entities
+  title: Guest room
+  show_header_toggle: false
+  entities:
+    - entity: climate.guest_room
+      name: Climate
+    - entity: sensor.guest_room_heat_demand
+      name: Heat demand
+    - entity: light.guest_room_spotlights
+      name: Spotlights
+
+- type: entities
+  title: Kids room
+  show_header_toggle: false
+  entities:
+    - entity: climate.kids_room
+      name: Climate
+    - entity: sensor.kids_room_heat_demand
+      name: Heat demand
+    - entity: light.kids_room_spotlights
+      name: Spotlights
+
+- type: entities
+  title: Bathroom
+  show_header_toggle: false
+  entities:
+    - entity: climate.bathroom
+      name: Climate
+    - entity: sensor.bathroom_heat_demand
+      name: Heat demand
+    - entity: switch.bathroom_extractor_fan
+      name: Extractor fan
+    - type: custom:fold-entity-row
+      head: 
+        type: section
+        label: Lights
+      open: true
+      items:
+        - entity: light.bathroom_shower_spotlights
+          name: Shower spotlights
+        - entity: light.bathroom_spotlights
+          name: Spotlights
+        - entity: light.bathroom_wall_lights
+          name: Wall lights

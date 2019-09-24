@@ -1,0 +1,99 @@
+homeassistant:
+  customize:
+    switch.master_bathroom_extractor_fan_1:
+      icon: mdi:fan
+    switch.master_bathroom_extractor_fan_2:
+      icon: mdi:fan
+
+light:
+  - platform: knx
+    name: Master bathroom pendant
+    address: 1/1/61
+    state_address: 1/2/61
+    
+  - platform: knx
+    name: Master bathroom spotlights
+    address: 1/1/62
+    state_address: 1/2/62
+    
+  - platform: knx
+    name: Master bathroom shower wall lights
+    address: 1/1/63
+    state_address: 1/2/63
+    
+  - platform: knx
+    name: Master bathroom bath wall lights
+    address: 1/1/64
+    state_address: 1/2/64
+
+switch:
+  - platform: knx  
+    name: Master bathroom extractor fan 1 
+    address: 7/1/10
+
+  - platform: knx  
+    name: Master bathroom extractor fan 2 
+    address: 7/1/110
+
+climate:
+  - platform: knx
+    name: Master bathroom
+    temperature_address: 4/6/10
+    target_temperature_state_address: 4/5/10
+    setpoint_shift_address: 3/3/10
+    setpoint_shift_state_address: 4/3/10
+    operation_mode_address: 3/1/10
+    controller_status_state_address: 4/0/10
+
+sensor:
+  - platform: knx
+    name: Master bathroom heat demand  
+    type: percent
+    state_address: 4/1/10
+
+automation:
+  - alias: Master bathroom lights on
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: state
+      entity_id: binary_sensor.master_bathroom_motion
+      from: 'off'
+      to: 'on'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: 'sun.sun'
+          state: 'below_horizon'
+        - condition: time
+          after: '12:00:00'
+          before: '01:00:00'
+        - condition: numeric_state
+          entity_id: sensor.master_bathroom_illumination
+          below: 10
+    action:
+      service: light.turn_on
+      entity_id:
+        - light.master_bathroom_shower_wall_lights
+        - light.master_bathroom_bath_wall_lights
+  
+  - alias: Master bathroom lights off
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: state
+      entity_id: binary_sensor.master_bathroom_motion
+      from: 'on'
+      to: 'off'
+      for:
+        minutes: 2
+    condition:
+      condition: state
+      entity_id: light.master_bathroom_extractor_fan_1
+      state: 'off'
+    action:
+      service: light.turn_off
+      entity_id:
+        - light.master_bathroom_shower_wall_lights
+        - light.master_bathroom_bath_wall_lights

@@ -1,0 +1,7 @@
+include:
+  entities:
+    - switch.hot_water
+    - switch.towel_rails
+    - sensor.downstairs_avg_temperature
+    - sensor.upstairs_avg_temperature
+    - binary_sensor.alxey_mi_band

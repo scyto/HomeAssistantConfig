@@ -1,0 +1,75 @@
+- alias: Telegram lights
+  initial_state: 'on'
+  hide_entity: true
+  trigger:
+    platform: event
+    event_type: telegram_callback
+    event_data:
+      data: "/lights"
+  action:
+    - service: telegram_bot.answer_callback_query
+      data_template:
+        callback_query_id: "{{ trigger.event.data.id }}"
+        message: ""
+    - service: telegram_bot.edit_message
+      data_template:
+        message_id: "{{ trigger.event.data.message.message_id }}"
+        chat_id: "{{ trigger.event.data.chat_id }}"
+        message: >-
+          {{ "\U0001F4A1" }} Choose a light
+       
+          {{ "\U0000202F" * 74 }}{{ "\U0000FEFF" }}
+        inline_keyboard:
+          - "\U0001F504 Reload:/lights"
+          - "{% if is_state('light.porch', 'on') %}\U00002600{% else %}\U0001F311{% endif %} Porch:/toggle porch, {% if is_state('light.driveway', 'on') %}\U00002600{% else %}\U0001F311{% endif %} Driveway:/toggle driveway"
+          - "{% if is_state('light.dining_room_pendant', 'on') %}\U00002600{% else %}\U0001F311{% endif %} Dining:/toggle dining_room_pendant, {% if is_state('light.kitchen_spotlights', 'on') %}\U00002600{% else %}\U0001F311{% endif %} Kitchen:/toggle kitchen_spotlights"
+          - "{% if is_state('light.lounge_floor_lamp', 'on') %}\U00002600{% else %}\U0001F311{% endif %} Floor lamp:/toggle lounge_floor_lamp"
+          - "\U0001F4A1 All lights off:/all_lights_off"
+          - "\U0001F3E0 Main menu:/menu_callback"
+
+- alias: Telegram toggle light
+  initial_state: 'on'
+  hide_entity: true
+  trigger:
+    - platform: event
+      event_type: telegram_callback
+  condition:
+    - condition: template
+      value_template: "{{ trigger.event.data.data.startswith('/toggle ') }}"
+  action:
+    - service: telegram_bot.answer_callback_query
+      data_template:
+        callback_query_id: "{{ trigger.event.data.id }}"
+        message: ""
+    - service: light.toggle
+      data_template:
+        entity_id: "{{ 'light.' ~ trigger.event.data.data.split(' ', 1)[1] }}"
+    - service: telegram_bot.edit_replymarkup
+      data_template:
+        message_id: "{{ trigger.event.data.message.message_id }}"
+        chat_id: "{{ trigger.event.data.chat_id }}" 
+        inline_keyboard:
+          - "\U0001F504 Reload:/lights"
+          - "{% if is_state('light.porch', 'on') %}\U00002600{% else %}\U0001F311{% endif %} Porch:/toggle porch, {% if is_state('light.driveway', 'on') %}\U00002600{% else %}\U0001F311{% endif %} Driveway:/toggle driveway"
+          - "{% if is_state('light.dining_room_pendant', 'on') %}\U00002600{% else %}\U0001F311{% endif %} Dining:/toggle dining_room_pendant, {% if is_state('light.kitchen_spotlights', 'on') %}\U00002600{% else %}\U0001F311{% endif %} Kitchen:/toggle kitchen_spotlights"
+          - "{% if is_state('light.lounge_floor_lamp', 'on') %}\U00002600{% else %}\U0001F311{% endif %} Floor lamp:/toggle lounge_floor_lamp"
+          - "\U0001F4A1 All lights off:/all_lights_off"
+          - "\U0001F3E0 Main menu:/menu_callback"
+
+- alias: Telegram all lights off
+  initial_state: 'on'
+  hide_entity: true
+  trigger:
+    platform: event
+    event_type: telegram_callback
+    event_data:
+      data: "/all_lights_off"
+  action:
+    - service: telegram_bot.answer_callback_query
+      data_template:
+        callback_query_id: "{{ trigger.event.data.id }}"
+        message: "Turning off all lights..."
+    - service: knx.send
+      data:
+        address: 1/0/1
+        payload: 0

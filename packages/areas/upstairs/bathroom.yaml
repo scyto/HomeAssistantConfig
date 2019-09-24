@@ -1,0 +1,41 @@
+homeassistant:
+  customize:
+    switch.bathroom_extractor_fan:
+      icon: mdi:fan
+
+light:
+  - platform: knx
+    name: Bathroom spotlights
+    address: 1/1/97
+    state_address: 1/2/97
+
+  - platform: knx  
+    name: Bathroom shower spotlights
+    address: 1/1/98
+    state_address: 1/2/98
+
+  - platform: knx  
+    name: Bathroom wall lights
+    address: 1/1/99
+    state_address: 1/2/99
+
+switch:
+  - platform: knx  
+    name: Bathroom extractor fan
+    address: 7/1/16
+
+climate:
+  - platform: knx
+    name: Bathroom
+    temperature_address: 4/6/16
+    target_temperature_state_address: 4/5/16
+    setpoint_shift_address: 3/3/16
+    setpoint_shift_state_address: 4/3/16
+    operation_mode_address: 3/1/16
+    controller_status_state_address: 4/0/16
+
+sensor:
+  - platform: knx
+    name: Bathroom heat demand  
+    type: percent
+    state_address: 4/1/16

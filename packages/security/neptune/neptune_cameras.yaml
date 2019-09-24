@@ -1,0 +1,35 @@
+camera:
+  - platform: generic
+    name: Neptune Front Left
+    still_image_url: http://192.168.2.200:8889/ISAPI/Streaming/channels/102/picture?videoResolutionWidth=1280&videoResolutionHeight=720&snapShotImageType=JPEG
+    stream_source: !secret hikvision_neptune_stream_102
+    username: !secret hikvision_neptune_username
+    password: !secret hikvision_neptune_password  
+    
+  - platform: generic
+    name: Neptune Front Right
+    still_image_url: http://192.168.2.200:8889/ISAPI/Streaming/channels/202/picture?videoResolutionWidth=1280&videoResolutionHeight=720&snapShotImageType=JPEG
+    stream_source: !secret hikvision_neptune_stream_202
+    username: !secret hikvision_neptune_username
+    password: !secret hikvision_neptune_password
+
+  - platform: generic
+    name: Neptune Back Garden
+    still_image_url: http://192.168.2.200:8889/ISAPI/Streaming/channels/302/picture?videoResolutionWidth=1280&videoResolutionHeight=720&snapShotImageType=JPEG
+    stream_source: !secret hikvision_neptune_stream_302
+    username: !secret hikvision_neptune_username
+    password: !secret hikvision_neptune_password  
+
+  - platform: generic
+    name: Neptune Patio
+    still_image_url: http://192.168.2.200:8889/ISAPI/Streaming/channels/402/picture?videoResolutionWidth=1280&videoResolutionHeight=720&snapShotImageType=JPEG
+    stream_source: !secret hikvision_neptune_stream_402
+    username: !secret hikvision_neptune_username
+    password: !secret hikvision_neptune_password  
+    
+  - platform: generic
+    name: Neptune Side Passage
+    still_image_url: http://192.168.2.200:8889/ISAPI/Streaming/channels/502/picture?videoResolutionWidth=1280&videoResolutionHeight=720&snapShotImageType=JPEG
+    stream_source: !secret hikvision_neptune_stream_502
+    username: !secret hikvision_neptune_username
+    password: !secret hikvision_neptune_password

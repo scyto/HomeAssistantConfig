@@ -1,0 +1,21 @@
+light:
+  - platform: knx
+    name: Dining room pendant 
+    address: 1/1/29
+    state_address: 1/2/29
+
+climate:
+  - platform: knx
+    name: Dining room
+    temperature_address: 4/6/5
+    target_temperature_state_address: 4/5/5
+    setpoint_shift_address: 3/3/5
+    setpoint_shift_state_address: 4/3/5
+    operation_mode_address: 3/1/5
+    controller_status_state_address: 4/0/5
+
+sensor:
+  - platform: knx
+    name: Dining room heat demand  
+    type: percent
+    state_address: 4/1/5

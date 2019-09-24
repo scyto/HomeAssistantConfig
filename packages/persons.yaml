@@ -1,0 +1,57 @@
+homeassistant:
+  customize:
+    person.marina:
+      entity_picture: /local/users/marina.jpg
+    person.alexey:
+      entity_picture: /local/users/alexey.jpg
+    person.elena:
+      entity_picture: /local/users/elena.jpg
+
+  customize_glob:
+    binary_sensor.*_presence:
+      icon: mdi:home-variant-outline
+    binary_sensor.*_mi_band:
+      icon: mdi:watch-variant
+      
+owntracks:
+  max_gps_accuracy: 100
+
+input_boolean:
+  alexey_home:
+    name: Alexey home
+    icon: mdi:account
+
+  marina_home:
+    name: Marina home
+    icon: mdi:account
+
+binary_sensor:
+  platform: template
+  sensors:
+    alexey_presence:
+      friendly_name: Alexey
+      device_class: presence
+      value_template: >-
+        {{ is_state('input_boolean.alexey_home', 'on') }}
+        
+    marina_presence:
+      friendly_name: Marina
+      device_class: presence
+      value_template: >-
+        {{ is_state('input_boolean.marina_home', 'on') }}
+
+person:
+  - name: Alexey
+    id: alexey
+    device_trackers:
+      - device_tracker.alexey_owntracks
+      
+  - name: Marina
+    id: marina
+    device_trackers:
+      - device_tracker.marina_owntracks
+
+  - name: Elena
+    id: elena
+    device_trackers:
+      - device_tracker.elena_owntracks

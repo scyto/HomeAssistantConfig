@@ -1,0 +1,87 @@
+yeelight:
+  devices:
+    192.168.1.95:
+      name: Nursery floor lamp
+      use_music_mode: true 
+      transition: 500
+
+light:
+  - platform: knx
+    name: Guest room spotlights
+    address: 1/1/77
+    state_address: 1/2/77
+
+climate:
+  - platform: knx
+    name: Guest room
+    temperature_address: 4/6/13
+    target_temperature_state_address: 4/5/13
+    setpoint_shift_address: 3/3/13
+    setpoint_shift_state_address: 4/3/13
+    operation_mode_address: 3/1/13
+    controller_status_state_address: 4/0/13
+
+sensor:
+  - platform: knx
+    name: Guest room heat demand  
+    type: percent
+    state_address: 4/1/13
+
+input_select:
+  nursery_scene:
+    options:
+      - nursery_dim    
+      - nursery_bright
+
+scene:
+  - name: Nursery dim
+    entities:
+      light.nursery_floor_lamp:
+          state: on
+          transition: 2
+          brightness_pct: 10
+          kelvin: 2700
+
+  - name: Nursery bright
+    entities:
+      light.nursery_floor_lamp:
+          state: on
+          transition: 2
+          brightness_pct: 100
+          kelvin: 3500
+
+automation:
+  - alias: Nursery button single click
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: event
+      event_type: xiaomi_aqara.click
+      event_data:
+        entity_id: binary_sensor.nursery_button
+        click_type: single
+    action:
+      service: light.toggle
+      entity_id: light.nursery_floor_lamp
+
+  - alias: Nursery button double click
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: event
+      event_type: xiaomi_aqara.click
+      event_data:
+        entity_id: binary_sensor.nursery_button
+        click_type: double
+    action:
+      service: input_select.select_next
+      entity_id: input_select.nursery_scene
+
+  - alias: Nursery scene change
+    trigger:
+    - platform: state
+      entity_id: input_select.nursery_scene
+    action:
+    - service: scene.turn_on
+      data_template:
+        entity_id: "{{ 'scene.' ~ states('input_select.nursery_scene') }}" 

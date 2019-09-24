@@ -1,0 +1,110 @@
+camera:
+  platform: mjpeg
+  name: Front Door
+  still_image_url: http://192.168.1.13/record/current.jpg
+  mjpeg_url: http://192.168.1.13/cgi-bin/faststream.jpg
+  username: !secret mobotix_username
+  password: !secret mobotix_password
+
+input_boolean:
+  porch_motion_notify:
+    name: Notify on porch motion
+    icon: mdi:run-fast
+
+automation:
+  - alias: Front door bell
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: webhook
+      webhook_id: front_door_bell
+    action:
+      - service: homeassistant.turn_on
+        entity_id: script.doorbell
+      - event: tileboard
+        event_data:
+          command: open_doorentry
+          target: front_door
+      - service: telegram_bot.send_photo
+        data_template:
+          target:
+            - !secret telegram_chat_id_alexey
+            - !secret telegram_chat_id_marina   
+          url: "http://localhost:8123{{ states.camera.front_door.attributes.entity_picture }}"
+          caption: "\U0001F6CE Doorbell is ringing"
+          inline_keyboard:
+            - "\U0001F4F9 New snapshot:/snapshot front_door"
+
+  - alias: Front door light
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: webhook
+      webhook_id: front_door_light
+    action:
+      - service: light.turn_on
+        entity_id: light.porch
+      - delay:
+          minutes: 1
+      - service: light.turn_off
+        entity_id: light.porch
+          
+  - alias: Porch light on
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: state
+      entity_id: binary_sensor.porch_motion
+      from: 'off'
+      to: 'on'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: 'sun.sun'
+          state: 'below_horizon'
+        - condition: numeric_state
+          entity_id: sensor.porch_illumination
+          below: 20
+    action:
+      service: light.turn_on
+      entity_id: light.porch
+
+  - alias: Porch light off
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: state
+      entity_id: binary_sensor.porch_motion
+      from: 'on'
+      to: 'off'
+      for:
+        minutes: 1
+    action:
+      service: light.turn_off
+      entity_id: light.porch
+    
+  - alias: Telegram message on porch motion
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: state
+      entity_id: binary_sensor.porch_motion
+      from: 'off'
+      to: 'on'
+    condition:
+    - condition: state
+      entity_id: input_boolean.porch_motion_notify
+      state: 'on'
+    action:
+      - delay:
+          seconds: 2
+      - service: telegram_bot.send_photo
+        data:
+          target:
+            - !secret telegram_chat_id_alexey
+            - !secret telegram_chat_id_marina   
+          url: "http://localhost:8123{{ states.camera.front_door.attributes.entity_picture }}"
+          caption: "Movement at front door"
+          inline_keyboard:
+            - "\U0001F4F9 New snapshot:/snapshot front_door"

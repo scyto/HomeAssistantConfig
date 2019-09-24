@@ -1,0 +1,86 @@
+light:
+  - platform: knx
+    name: Master bedroom spotlights
+    address: 1/1/53
+    state_address: 1/2/53
+    
+  - platform: knx
+    name: Master bedroom wardrobe spotlights
+    address: 1/1/54
+    state_address: 1/2/54
+    
+  - platform: knx
+    name: Master bedroom pendants
+    address: 1/1/55
+    state_address: 1/2/55
+
+climate:
+  - platform: knx
+    name: Master bedroom
+    temperature_address: 4/6/9
+    target_temperature_state_address: 4/5/9
+    setpoint_shift_address: 3/3/9
+    setpoint_shift_state_address: 4/3/9
+    operation_mode_address: 3/1/9
+    controller_status_state_address: 4/0/9
+
+sensor:
+  - platform: knx
+    name: Master bedroom heat demand  
+    type: percent
+    state_address: 4/1/9
+
+automation:
+  - alias: Bedside buttons single click
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: event
+      event_type: xiaomi_aqara.click
+      event_data:
+        entity_id: 
+          - binary_sensor.alexey_button
+          - binary_sensor.marina_button
+        click_type: single
+    action:
+      service: knx.send
+      data:
+        address: 1/0/1
+        payload: 0
+
+  - alias: Bedside buttons double click
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: event
+      event_type: xiaomi_aqara.click
+      event_data:
+        entity_id: 
+          - binary_sensor.alexey_button
+          - binary_sensor.marina_button
+        click_type: double
+    action:
+      service: light.toggle
+      entity_id:
+        - light.master_bathroom_shower_wall_lights
+        - light.master_bathroom_bath_wall_lights
+
+  - alias: Bedside buttons long press
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: event
+      event_type: xiaomi_aqara.click
+      event_data:
+        entity_id: 
+          - binary_sensor.alexey_button
+          - binary_sensor.marina_button
+        click_type: long_click_press
+    action:
+      service_template: >-
+        {% if is_state('cover.front_gate', 'open') %}
+          cover.close_cover
+        {% else %}
+          cover.open_cover
+        {% endif %}
+      entity_id: cover.front_gate

@@ -1,0 +1,84 @@
+input_boolean:
+  neptune_alarm_night:
+    name: Night set
+    icon: mdi:shield-half-full
+
+  neptune_alarm_full:
+    name: Full set
+    icon: mdi:shield
+
+automation:
+  - alias: Neptune night set armed
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      - platform: state
+        entity_id:  input_boolean.neptune_alarm_night
+        from: 'off'
+        to: 'on'
+    action:
+      - service: telegram_bot.send_message
+        data_template:
+          target:
+            - !secret telegram_chat_id_parents
+          disable_notification: true 
+          title: ""
+          message: "\U0001F6E1 Neptune alarm has been armed (Night Set)"
+
+  - alias: Neptune night set disarmed
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      - platform: state
+        entity_id:  input_boolean.neptune_alarm_night
+        from: 'on'
+        to: 'off'
+    action:
+      - service: telegram_bot.send_message
+        data_template:
+          target:
+            - !secret telegram_chat_id_parents
+          disable_notification: true 
+          title: ""
+          message: "\U0001F6E1 Neptune alarm has been disarmed (Night Set)"
+
+  - alias: Neptune alarm full set armed
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      - platform: state
+        entity_id: input_boolean.neptune_alarm_full
+        from: 'off'
+        to: 'on'
+    action:
+      - service: input_boolean.turn_on
+        entity_id:
+          - input_boolean.neptune_presence_simulation
+          - input_boolean.neptune_motion_notify_video
+      - service: telegram_bot.send_message
+        data_template:
+          target:
+            - !secret telegram_chat_id_parents 
+          title: ""
+          message: "\U0001F6E1 Neptune alarm has been armed (Full Set)" 
+
+  - alias: Neptune alarm full set disarmed
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      - platform: state
+        entity_id: input_boolean.neptune_alarm_full
+        from: 'on'
+        to: 'off'
+    action:
+      - service: input_boolean.turn_off
+        entity_id: 
+          - input_boolean.neptune_presence_simulation
+          - input_boolean.neptune_motion_notify_video
+      - service: telegram_bot.send_message
+        data_template:
+          target:
+            - !secret telegram_chat_id_parents
+          disable_notification: true 
+          title: ""
+          message: "\U0001F6E1 Neptune alarm has been disarmed (Full Set)" 

@@ -1,0 +1,188 @@
+homeassistant:
+  customize:
+    switch.intercom:
+      icon: mdi:phone
+
+    cover.front_gate:
+      device_class: garage
+
+camera:
+  platform: mjpeg
+  name: Front Gate
+  still_image_url: http://192.168.1.12/record/current.jpg
+  mjpeg_url: http://192.168.1.12/cgi-bin/faststream.jpg
+  username: !secret mobotix_username
+  password: !secret mobotix_password
+
+rest_command:
+  trigger_front_gate: 
+    url: "http://192.168.1.12/control/rcontrol?action=customfunction&action=sigout&profile=~Door"
+    username: !secret mobotix_username
+    password: !secret mobotix_password
+
+input_boolean:
+  front_gate_status:
+
+cover:
+  platform: template
+  covers:
+    front_gate:
+      friendly_name: Front gate
+      value_template: "{{ is_state('input_boolean.front_gate_status', 'on') }}"
+      icon_template: >-
+        {% if is_state('input_boolean.front_gate_status', 'on') %}
+          mdi:garage-open
+        {% else %}
+          mdi:garage
+        {% endif %}
+      open_cover:
+        - condition: state
+          entity_id: input_boolean.front_gate_status
+          state: 'off'
+        - service: rest_command.trigger_front_gate
+      close_cover:
+        - condition: state
+          entity_id: input_boolean.front_gate_status
+          state: 'on'
+        - service: rest_command.trigger_front_gate
+
+automation:
+  - alias: Front gate KNX event
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: event
+      event_type: knx_event
+      event_data:
+        address: "7/7/1"
+    action:
+      service_template: >-
+        {% if is_state('cover.front_gate', 'open') %}
+          cover.close_cover
+        {% else %}
+          cover.open_cover
+        {% endif %}
+      entity_id: cover.front_gate
+
+  - alias: Front gate toggle webhook 
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: webhook
+      webhook_id: front_gate_toggle
+    action:
+      service_template: >-
+        {% if is_state('cover.front_gate', 'open') %}
+          cover.close_cover
+        {% else %}
+          cover.open_cover
+        {% endif %}
+      entity_id: cover.front_gate
+
+  - alias: Front gate trigger
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: webhook
+      webhook_id: front_gate_trigger
+    action:
+      - service: input_boolean.toggle
+        entity_id: input_boolean.front_gate_status
+      - service: homeassistant.turn_on
+        entity_id: script.tts
+        data_template:
+          variables:
+            message: >-
+              {% if is_state('input_boolean.front_gate_status', 'on') %}
+                Front gate is opening
+              {% else %}
+                Front gate is closing
+              {% endif %}
+      - event: tileboard
+        event_data_template:
+          command: "notify"
+          id: "front_gate"
+          icon: "mdi-gate"
+          type: "info"
+          title: "Attention"
+          message: >-
+            {% if is_state('input_boolean.front_gate_status', 'on') %}
+              Front gate is opening
+            {% else %}
+              Front gate is closing
+            {% endif %}
+          lifetime: 20
+      - service: telegram_bot.send_message
+        data_template:
+          target:
+            - !secret telegram_chat_id_alexey
+            - !secret telegram_chat_id_marina   
+          title: ""
+          message: >-
+            {% if is_state('input_boolean.front_gate_status', 'on') %}
+              {{"\U0001F513"}} Front gate is opening
+            {% else %}
+              {{"\U0001F512"}} Front gate is closing
+            {% endif %}
+
+  - alias: Front gate bell
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: webhook
+      webhook_id: front_gate_bell
+    action:
+      - service: homeassistant.turn_on
+        entity_id: script.doorbell
+      - event: tileboard
+        event_data:
+          command: open_doorentry
+          target: front_gate 
+      - service: telegram_bot.send_photo
+        data_template:
+          target:
+            - !secret telegram_chat_id_alexey
+            - !secret telegram_chat_id_marina   
+          url: "http://localhost:8123{{ states.camera.front_gate.attributes.entity_picture }}"
+          caption: "\U0001F6CE Front gate bell is ringing"
+          inline_keyboard:
+            - "\U0001F513 Open gate:/open_front_gate"
+            - "\U0001F4F9 New snapshot:/snapshot front_gate"
+
+  - alias: Front gate light
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: webhook
+      webhook_id: front_gate_light
+    action:
+      - service: light.turn_on
+        entity_id: light.driveway
+      - delay:
+          minutes: 2
+      - service: light.turn_off
+        entity_id: light.driveway
+
+  - alias: Front gate driveway lights on when dark
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: state
+      entity_id: cover.front_gate
+      to: 'open'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: sun.sun
+          state: 'below_horizon'
+        - condition: state
+          entity_id: light.driveway
+          state: 'off'
+    action:
+      - service: light.turn_on
+        entity_id: light.driveway
+      - delay:
+          minutes: 2
+      - service: light.turn_off
+        entity_id: light.driveway

@@ -1,0 +1,169 @@
+homeassistant:
+  customize:
+    light.lounge_floor_lamp:
+      icon: mdi:lamp
+      
+    media_player.denon:
+      friendly_name: AV Receiver    
+
+    media_player.bravia_4k_2015:
+      friendly_name: Lounge TV  
+
+
+light:
+  - platform: knx
+    name: Lounge spotlights (front left) 
+    address: 1/1/23
+    state_address: 1/2/23
+
+  - platform: knx
+    name: Lounge spotlights (front right) 
+    address: 1/1/24
+    state_address: 1/2/24
+  
+  - platform: knx
+    name: Lounge spotlights (rear left) 
+    address: 1/1/21
+    state_address: 1/2/21
+
+  - platform: knx
+    name: Lounge spotlights (rear right) 
+    address: 1/1/22
+    state_address: 1/2/22
+
+  - platform: group
+    name: Lounge spotlights
+    entities:
+      - light.lounge_spotlights_front_left
+      - light.lounge_spotlights_front_right
+      - light.lounge_spotlights_rear_left
+      - light.lounge_spotlights_rear_right  
+
+yeelight:
+  devices:
+    192.168.1.93:
+      name: Lounge floor lamp
+      use_music_mode: true 
+      transition: 500
+    192.168.1.94:
+      name: Lounge lightstrip
+      use_music_mode: true 
+      transition: 500
+
+climate:
+  - platform: knx
+    name: Lounge
+    temperature_address: 4/6/4
+    target_temperature_state_address: 4/5/4
+    setpoint_shift_address: 3/3/4
+    setpoint_shift_state_address: 4/3/4
+    operation_mode_address: 3/1/4
+    controller_status_state_address: 4/0/4
+
+sensor:
+  - platform: knx
+    name: Lounge heat demand  
+    type: percent
+    state_address: 4/1/4
+
+media_player:
+  - platform: denon
+    name: AV Receiver
+    host: 192.168.1.32
+
+  - platform: braviatv
+    name: Lounge TV
+    host: 192.168.1.33
+
+automation:
+  - alias: Lounge lights on
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: state
+      entity_id: binary_sensor.lounge_motion
+      from: 'off'
+      to: 'on'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: media_player.lounge_tv
+          state: 'off'
+        - condition: state
+          entity_id: 'sun.sun'
+          state: 'below_horizon'
+        - condition: numeric_state
+          entity_id: sensor.lounge_illumination
+          below: 10
+    action:
+      service: light.turn_on
+      entity_id: light.lounge_floor_lamp
+  
+  - alias: Lounge lights off
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: state
+      entity_id: binary_sensor.lounge_motion
+      from: 'on'
+      to: 'off'
+      for:
+        minutes: 2
+    condition:
+      condition: state
+      entity_id: media_player.lounge_tv
+      state: 'off'
+    action:
+      service: light.turn_off
+      entity_id: light.lounge_floor_lamp
+
+  - alias: Lounge cube flip 90
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: event
+      event_type: xiaomi_aqara.cube_action
+      event_data:
+        entity_id: binary_sensor.lounge_cube
+        action_type: flip90
+    action:
+      service: homeassistant.toggle
+      entity_id: light.lounge_floor_lamp
+    
+  - alias: Lounge cube tap twice
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: event
+      event_type: xiaomi_aqara.cube_action
+      event_data:
+        entity_id: binary_sensor.lounge_cube
+        action_type: tap_twice
+    action:
+      service: light.turn_off
+      entity_id:
+        - light.hallway_spotlights
+        - light.landing_lights
+        - light.staircase_lights
+        - light.dining_room_pendant
+
+  - alias: Lounge cube rotate
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: event
+      event_type: xiaomi_aqara.cube_action
+      event_data:
+        entity_id: binary_sensor.lounge_cube
+        action_type: rotate
+    action:
+      service: light.turn_on
+      data_template:
+        entity_id: light.lounge_floor_lamp
+        brightness: >-
+          {%if trigger.event.data.action_value | float > 0 %}
+            {{ states.light.lounge_floor_lamp.attributes.brightness | int + 50 }}
+          {% else %}
+            {{ states.light.lounge_floor_lamp.attributes.brightness | int - 50 }}
+          {% endif %}

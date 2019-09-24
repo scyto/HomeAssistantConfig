@@ -1,0 +1,18 @@
+homeassistant:
+  customize:
+    sensor.public_ip:
+      icon: mdi:wan
+      
+speedtestdotnet:
+  scan_interval:
+    minutes: 30
+  monitored_conditions:
+    - ping
+    - download
+    - upload
+    
+sensor:
+  - platform: rest
+    name: Public IP
+    resource: https://ifconfig.co/json
+    value_template: '{{ value_json.ip }}'

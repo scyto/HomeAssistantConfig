@@ -1,0 +1,123 @@
+input_boolean:
+  neptune_motion_notify_photo:
+    name: Notify on motion (photo)
+    icon: mdi:run-fast
+
+  neptune_motion_notify_video:
+    name: Notify on motion
+    icon: mdi:run-fast
+    
+binary_sensor:
+  - platform: hikvision
+    host: 192.168.2.200
+    port: 8889
+    username: !secret hikvision_neptune_username
+    password: !secret hikvision_neptune_password
+    customize:
+      neptune_nvr_line_crossing_1:
+        delay: 15
+      neptune_nvr_line_crossing_2:
+        delay: 15
+      neptune_nvr_line_crossing_3:
+        delay: 15
+      neptune_nvr_line_crossing_4:
+        delay: 15
+      neptune_nvr_line_crossing_5:
+        delay: 15
+        
+homeassistant:
+  customize:
+    binary_sensor.neptune_nvr_line_crossing_1:
+      friendly_name: Front Left
+    binary_sensor.neptune_nvr_line_crossing_2:
+      friendly_name: Front Right
+    binary_sensor.neptune_nvr_line_crossing_3:
+      friendly_name: Back Garden
+    binary_sensor.neptune_nvr_line_crossing_4:
+      friendly_name: Patio
+    binary_sensor.neptune_nvr_line_crossing_5:
+      friendly_name: Side Passage
+
+automation:
+  - alias: Neptune capture outdoor movement photo
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      - platform: state
+        entity_id:
+          - binary_sensor.neptune_nvr_line_crossing_1
+          - binary_sensor.neptune_nvr_line_crossing_2
+          - binary_sensor.neptune_nvr_line_crossing_3
+          - binary_sensor.neptune_nvr_line_crossing_4
+          - binary_sensor.neptune_nvr_line_crossing_5
+        from: 'off'
+        to: 'on'
+    condition:
+    - condition: state
+      entity_id: input_boolean.neptune_motion_notify_photo
+      state: 'on'
+    action:
+      - service: telegram_bot.send_photo
+        data_template:
+          target:
+            - !secret telegram_chat_id_parents
+          url: "http://localhost:8123{{ states.camera[{
+            '1' : 'neptune_front_left',
+            '2' : 'neptune_front_right',
+            '3' : 'neptune_back_garden',
+            '4' : 'neptune_patio',
+            '5' : 'neptune_side_passage'
+          }[trigger.entity_id[-1]]].attributes.entity_picture }}"
+          caption: "Movement in {{ trigger.to_state.attributes.friendly_name }}"
+
+  - alias: Neptune capture outdoor movement video
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      - platform: state
+        entity_id:
+          - binary_sensor.neptune_nvr_line_crossing_1
+          - binary_sensor.neptune_nvr_line_crossing_2
+          - binary_sensor.neptune_nvr_line_crossing_3
+          - binary_sensor.neptune_nvr_line_crossing_4
+          - binary_sensor.neptune_nvr_line_crossing_5
+        from: 'off'
+        to: 'on'
+    condition:
+    - condition: state
+      entity_id: input_boolean.neptune_motion_notify_video
+      state: 'on'
+    action:
+      - service: camera.record
+        data_template:
+          entity_id: "camera.{{ {
+            '1' : 'neptune_front_left',
+            '2' : 'neptune_front_right',
+            '3' : 'neptune_back_garden',
+            '4' : 'neptune_patio',
+            '5' : 'neptune_side_passage'
+          }[trigger.entity_id[-1]] }}"
+          filename: "/tmp/capture_neptune_{{ as_timestamp(now()) | int }}_{{ trigger.entity_id[-1] }}.mp4"
+          lookback: 10
+          duration: 30
+
+  - alias: Neptune send outdoor movement video via Telegram
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: event
+      event_type: folder_watcher
+      event_data:
+        event_type: created
+    condition:
+      - condition: template
+        value_template: "{{ trigger.event.data.file.startswith('capture_neptune_') }}"
+    action:
+      - delay:
+          seconds: 30
+      - service: telegram_bot.send_video
+        data_template:
+          target:
+            - !secret telegram_chat_id_parents
+          file: "{{ trigger.event.data.path }}"
+          caption: "Movement in {{ state_attr('binary_sensor.neptune_nvr_line_crossing_' + trigger.event.data.file[-5:-4], 'friendly_name') }}"

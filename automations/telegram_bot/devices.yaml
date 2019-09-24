@@ -1,0 +1,37 @@
+- alias: Telegram devices
+  initial_state: 'on'
+  hide_entity: true
+  trigger:
+    platform: event
+    event_type: telegram_callback
+    event_data:
+      data: "/devices"
+  action:
+    - service: telegram_bot.answer_callback_query
+      data_template:
+        callback_query_id: "{{ trigger.event.data.id }}"
+        message: ""
+    - service: telegram_bot.edit_message
+      data_template:
+        message_id: "{{ trigger.event.data.message.message_id }}"
+        chat_id: "{{ trigger.event.data.chat_id }}"
+        message: >-
+          {{ "\U0001F4FA" }} Devices
+
+          
+          *- Ping* {{ states('sensor.speedtest_ping') }} ms
+          
+          *- Download* {{ states('sensor.speedtest_download') }} Mbit/s
+        
+          *- Upload* {{ states('sensor.speedtest_upload') }} Mbit/s
+
+          *- Lounge TV* is {{ states('media_player.lounge_tv') }}
+
+          *- AV Receiver* is {{ states('media_player.denon') }}
+
+          {{ "\U0000202F" * 74 }}{{ "\U0000FEFF" }}
+
+          *Public IP* {{ states('sensor.public_ip') }}
+        inline_keyboard:
+          - "\U0001F504 Reload:/devices"
+          - "\U0001F3E0 Main menu:/menu_callback"

@@ -1,0 +1,36 @@
+light:
+  - platform: knx  
+    name: Staircase
+    address: 1/1/67
+    state_address: 1/2/67
+
+automation:
+  - alias: Staircase lights on
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: state
+      entity_id: binary_sensor.staircase_motion
+      from: 'off'
+      to: 'on'   
+    condition:
+    - condition: numeric_state
+      entity_id:  sensor.staircase_illumination
+      below: 5
+    action:
+      service: light.turn_on
+      entity_id: light.staircase
+          
+  - alias: Staircase lights off
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: state
+      entity_id: binary_sensor.staircase_motion
+      from: 'on'
+      to: 'off'
+      for:
+        minutes: 1
+    action:
+      service: light.turn_off
+      entity_id: light.staircase

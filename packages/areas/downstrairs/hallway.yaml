@@ -59,3 +59,18 @@ automation:
       service: light.turn_off
       entity_id: light.hallway_spotlights
 
+  - alias: Send Telegram message when front door opens
+    trigger:
+    - platform: state  
+      entity_id: binary_sensor.front_door
+      from: 'off'
+      to: 'on'
+    action:
+    - service: telegram_bot.send_message
+      data_template:
+        target:
+          - !secret telegram_chat_id_alexey
+          - !secret telegram_chat_id_marina   
+        title: ""
+        message: >- 
+          {{"\U0001F513"}}  Front door has been opened

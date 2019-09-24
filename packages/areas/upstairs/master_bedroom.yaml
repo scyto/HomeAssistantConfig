@@ -35,13 +35,16 @@ automation:
     initial_state: 'on'
     hide_entity: true
     trigger:
-      platform: event
-      event_type: xiaomi_aqara.click
-      event_data:
-        entity_id: 
-          - binary_sensor.alexey_button
-          - binary_sensor.marina_button
-        click_type: single
+      - platform: event
+        event_type: xiaomi_aqara.click
+        event_data:
+          entity_id: binary_sensor.alexey_button
+          click_type: single
+      - platform: event
+        event_type: xiaomi_aqara.click
+        event_data:
+          entity_id: binary_sensor.marina_button
+          click_type: single
     action:
       service: knx.send
       data:
@@ -52,13 +55,16 @@ automation:
     initial_state: 'on'
     hide_entity: true
     trigger:
-      platform: event
-      event_type: xiaomi_aqara.click
-      event_data:
-        entity_id: 
-          - binary_sensor.alexey_button
-          - binary_sensor.marina_button
-        click_type: double
+      - platform: event
+        event_type: xiaomi_aqara.click
+        event_data:
+          entity_id: binary_sensor.alexey_button
+          click_type: double
+      - platform: event
+        event_type: xiaomi_aqara.click
+        event_data:
+          entity_id: binary_sensor.marina_button
+          click_type: double
     action:
       service: light.toggle
       entity_id:
@@ -69,13 +75,16 @@ automation:
     initial_state: 'on'
     hide_entity: true
     trigger:
-      platform: event
-      event_type: xiaomi_aqara.click
-      event_data:
-        entity_id: 
-          - binary_sensor.alexey_button
-          - binary_sensor.marina_button
-        click_type: long_click_press
+      - platform: event
+        event_type: xiaomi_aqara.click
+        event_data:
+          entity_id: binary_sensor.alexey_button
+          click_type: long_click_press
+      - platform: event
+        event_type: xiaomi_aqara.click
+        event_data:
+          entity_id: binary_sensor.marina_button
+          click_type: long_click_press
     action:
       service_template: >-
         {% if is_state('cover.front_gate', 'open') %}

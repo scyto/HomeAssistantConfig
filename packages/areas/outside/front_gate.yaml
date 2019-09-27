@@ -21,6 +21,7 @@ rest_command:
     password: !secret mobotix_password
 
 input_boolean:
+  name: Front gate status
   front_gate_status:
 
 cover:
@@ -97,7 +98,7 @@ automation:
     action:
       - service: input_boolean.toggle
         entity_id: input_boolean.front_gate_status
-      - service: homeassistant.turn_on
+      - service: script.turn_on
         entity_id: script.tts
         data_template:
           variables:
@@ -141,7 +142,7 @@ automation:
       platform: webhook
       webhook_id: front_gate_bell
     action:
-      - service: homeassistant.turn_on
+      - service: script.turn_on
         entity_id: script.doorbell
       - event: tileboard
         event_data:
@@ -165,7 +166,9 @@ automation:
       platform: webhook
       webhook_id: front_gate_light
     action:
-      - service: homeassistant.turn_on
+      - service: script.turn_off
+        entity_id: script.driveway_lights_on
+      - service: script.turn_on
         entity_id: script.driveway_lights_on
         data_template:
           variables:
@@ -188,7 +191,9 @@ automation:
           entity_id: light.driveway
           state: 'off'
     action:
-      - service: homeassistant.turn_on
+      - service: script.turn_off
+        entity_id: script.driveway_lights_on
+      - service: script.turn_on
         entity_id: script.driveway_lights_on
         data_template:
           variables:

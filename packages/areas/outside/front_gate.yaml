@@ -21,8 +21,8 @@ rest_command:
     password: !secret mobotix_password
 
 input_boolean:
-  name: Front gate status
   front_gate_status:
+      name: Front gate status
 
 cover:
   platform: template

@@ -41,5 +41,23 @@ homekit:
       - input_boolean.silent_mode
       - input_boolean.alexey_home
       - input_boolean.marina_home
+      - binary_sensor.front_door
+      - binary_sensor.lounge_window
+      - binary_sensor.master_bedroom_window
+      - binary_sensor.study_window
     exclude_entities:
       - switch.rear_gate_relay
+
+cloud:
+  alexa:
+    filter:
+      include_domains:
+        - climate
+        - switch
+        - light
+        - media_player
+        - cover
+        - binary_sensor
+        - sensor
+      exclude_entities:
+        - switch.rear_gate_relay

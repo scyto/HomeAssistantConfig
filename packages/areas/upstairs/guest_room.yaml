@@ -30,11 +30,12 @@ sensor:
 input_select:
   guest_room_scene:
     options:
-      - guest_room_dim    
-      - guest_room_bright
+      - guest_room_floor_lamp_dim    
+      - guest_room_floor_lamp_bright
+      - guest_room_floor_lamp_off
 
 scene:
-  - name: Guest room dim
+  - name: Guest room floor lamp dim
     entities:
       light.guest_room_floor_lamp:
           state: on
@@ -42,13 +43,19 @@ scene:
           brightness_pct: 10
           kelvin: 2700
 
-  - name: Guest room bright
+  - name: Guest room floor lamp bright
     entities:
       light.guest_room_floor_lamp:
           state: on
           transition: 2
           brightness_pct: 100
           kelvin: 3500
+
+  - name: Guest room floor lamp off
+    entities:
+      light.guest_room_floor_lamp:
+          state: off
+          transition: 2
 
 automation:
   - alias: Guest room button single click
@@ -61,8 +68,8 @@ automation:
         entity_id: binary_sensor.guest_room_button
         click_type: single
     action:
-      service: light.toggle
-      entity_id: light.guest_room_floor_lamp
+      service: input_select.select_next
+      entity_id: input_select.guest_room_scene
 
   - alias: Guest room button double click
     initial_state: 'on'
@@ -74,10 +81,12 @@ automation:
         entity_id: binary_sensor.guest_room_button
         click_type: double
     action:
-      service: input_select.select_next
-      entity_id: input_select.guest_room_scene
+      service: light.toggle
+      entity_id: light.guest_room_floor_lamp
 
   - alias: Guest room scene change
+    initial_state: 'on'
+    hide_entity: true
     trigger:
     - platform: state
       entity_id: input_select.guest_room_scene

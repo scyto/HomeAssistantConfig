@@ -1,7 +1,10 @@
 homeassistant:
   customize:
     sensor.outside_temperature:
-    icon: mdi:thermometer
+      icon: mdi:thermometer
+
+    light.outside:
+      icon: mdi:coach-lamp
 
 light:
   - platform: knx

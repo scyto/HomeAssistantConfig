@@ -30,39 +30,3 @@ sensor:
     name: Landing heat demand  
     type: percent
     state_address: 4/1/11  
-
-automation:
-  - alias: Landing lights on
-    initial_state: 'on'
-    hide_entity: true
-    trigger:
-      platform: state
-      entity_id: binary_sensor.landing_motion
-      from: 'off'
-      to: 'on'
-    condition:
-      condition: and
-      conditions:
-        - condition: state
-          entity_id: 'sun.sun'
-          state: 'below_horizon'
-        - condition: numeric_state
-          entity_id: sensor.landing_illumination
-          below: 10
-    action:
-      service: light.turn_on
-      entity_id: light.landing_spotlights
-          
-  - alias: Landing lights off
-    initial_state: 'on'
-    hide_entity: true
-    trigger:
-      platform: state
-      entity_id: binary_sensor.landing_motion
-      from: 'on'
-      to: 'off'
-      for:
-        minutes: 1
-    action:
-      service: light.turn_off
-      entity_id: light.landing_spotlights

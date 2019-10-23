@@ -11,7 +11,7 @@ homeassistant:
     binary_sensor.*_presence:
       icon: mdi:home-variant-outline
     binary_sensor.*_mi_band:
-      icon: mdi:watch-variant
+      icon: mdi:heart
       
 owntracks:
   max_gps_accuracy: 100
@@ -39,6 +39,12 @@ binary_sensor:
       device_class: presence
       value_template: >-
         {{ is_state('input_boolean.marina_home', 'on') }}
+
+sensor:
+  - platform: google_fit
+    name: Alexey
+    client_id: !secret google_client_id
+    client_secret: !secret google_client_secret
 
 person:
   - name: Alexey

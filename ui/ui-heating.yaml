@@ -6,26 +6,7 @@
       entities:
         - input_select.climate_mode
         - type: section
-          label: Rooms
-        - type: custom:fold-entity-row
-          head: 
-            type: entity
-            entity: sensor.downstairs_temperature
-            name: Downstrairs
-            icon: mdi:radiator
-          items:
-            - entity: binary_sensor.downstrairs_ufh_pump
-              name: UFH Pump
-              icon: mdi:engine
-            - type: divider
-              style:
-                height: 1px
-                background: '#dcdcdc'
-            - climate.hallway
-            - climate.av_room
-            - climate.lounge
-            - climate.dining_room
-            - climate.kitchen
+          label: Areas
         - type: custom:fold-entity-row
           head:
             type: entity
@@ -47,6 +28,26 @@
             - climate.study
             - climate.guest_room
             - climate.bathroom
+
+        - type: custom:fold-entity-row
+          head: 
+            type: entity
+            entity: sensor.downstairs_temperature
+            name: Downstrairs
+            icon: mdi:radiator
+          items:
+            - entity: binary_sensor.downstrairs_ufh_pump
+              name: UFH Pump
+              icon: mdi:engine
+            - type: divider
+              style:
+                height: 1px
+                background: '#dcdcdc'
+            - climate.hallway
+            - climate.av_room
+            - climate.lounge
+            - climate.dining_room
+            - climate.kitchen
 
         - type: custom:fold-entity-row
           head: 
@@ -131,14 +132,19 @@
                 - input_datetime.weekends_pm_towel_rails_on
                 - input_datetime.weekends_pm_towel_rails_off
 
+- type: vertical-stack
+  cards:
+    - type: horizontal-stack
+      cards:
+        - type: custom:mini-graph-card
+          name: Upstrais
+          entities:
+            - sensor.upstairs_temperature
 
-- type: custom:mini-graph-card
-  name: Temperature
-  entities:
-    - entity: sensor.downstairs_temperature
-      name: Downstairs
-    - entity: sensor.upstairs_temperature
-      name: Upstrais
+        - type: custom:mini-graph-card
+          name: Downstairs
+          entities:
+            - sensor.downstairs_temperature
 
 #- type: horizontal-stack
 #  cards:

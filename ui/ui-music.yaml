@@ -44,6 +44,26 @@
       hide:
         controls: true
 
+    - type: divider
+      style:
+        height: 1px
+        background: '#dcdcdc'
+
+    - type: weblink
+      url: http://192.168.1.31/CasaTunes
+      icon: mdi:itunes
+      name: CasaTunes
+
+    - type: weblink
+      url: http://192.168.1.31/CasaSetup
+      icon: mdi:settings
+      name: CasaSetup
+
+    - type: weblink
+      url: http://192.168.1.32/
+      icon: mdi:amplifier
+      name: Denon AVR
+
 - type: custom:mini-media-player
   entity: media_player.alexey_s_player
   source: icon
@@ -53,6 +73,13 @@
 
 - type: custom:mini-media-player
   entity: media_player.marina_s_player
+  source: icon
+  hide:
+    volume: true
+    power: true
+
+- type: custom:mini-media-player
+  entity: media_player.maria_s_player
   source: icon
   hide:
     volume: true

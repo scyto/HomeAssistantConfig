@@ -33,3 +33,23 @@ sensor.upstairs_temperature:
         name: Guest room
       - entity: sensor.bathroom_heat_demand
         name: Bathroom
+
+binary_sensor.alexey_mi_band:
+  title: Health
+  card:
+    type: entities
+    entities:
+      - entity: sensor.alexey_steps
+        name: Steps
+      - entity: sensor.alexey_distance
+        name: Distance
+      - entity: sensor.alexey_calories
+        name: Calories
+      - entity: sensor.alexey_move_time
+        name: Move time
+      - entity: sensor.alexey_heartrate
+        name: Heartrate
+      - entity: sensor.alexey_sleep
+        name: Sleep
+      - entity: sensor.alexey_weight
+        name: Weight

@@ -16,6 +16,13 @@ sensor:
       mode: transit
       transit_mode: subway
 
+  - platform: here_travel_time
+    app_id: !secret here_app_id
+    app_code: !secret here_app_code
+    name: Phone To Home
+    origin_entity_id: device_tracker.alexey_owntracks
+    destination_entity_id: zone.home
+
   - platform: london_underground
     line:
       - Northern

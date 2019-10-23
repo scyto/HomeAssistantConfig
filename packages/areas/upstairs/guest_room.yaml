@@ -84,6 +84,19 @@ automation:
       service: light.toggle
       entity_id: light.guest_room_floor_lamp
 
+  - alias: Guest room button long press
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      platform: event
+      event_type: xiaomi_aqara.click
+      event_data:
+        entity_id: binary_sensor.guest_room_button
+        click_type: long_click_press
+    action:
+      service: media_player.toggle
+      entity_id: media_player.bedroom
+
   - alias: Guest room scene change
     initial_state: 'on'
     hide_entity: true

@@ -4,6 +4,7 @@
 *.state
 *.log
 *.db
+*.token
 deps
 tts
 www

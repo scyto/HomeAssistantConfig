@@ -36,6 +36,3 @@ views:
     icon: mdi:code-tags
     path: admin
     cards: !include ui/ui-admin.yaml
-
-
-

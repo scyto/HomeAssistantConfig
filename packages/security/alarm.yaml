@@ -34,7 +34,7 @@ automation:
       - service: telegram_bot.send_message
         data_template:
           target:
-            - !secret telegram_chat_id_parents
+            - !secret telegram_chat_id_neptune
           disable_notification: true 
           title: ""
           message: "\U0001F6E1 Saturn alarm has been armed (Night Set)"
@@ -62,7 +62,7 @@ automation:
       - service: telegram_bot.send_message
         data_template:
           target:
-            - !secret telegram_chat_id_parents 
+            - !secret telegram_chat_id_neptune 
           title: ""
           message: "\U0001F6E1 Saturn alarm has been disarmed (Night Set)"
 
@@ -91,7 +91,7 @@ automation:
       - service: telegram_bot.send_message
         data_template:
           target:
-            - !secret telegram_chat_id_parents 
+            - !secret telegram_chat_id_neptune 
           title: ""
           message: "\U0001F6E1 Saturn alarm has been armed (Full Set)"
 
@@ -124,7 +124,7 @@ automation:
       - service: telegram_bot.send_message
         data_template:
           target:
-            - !secret telegram_chat_id_parents 
+            - !secret telegram_chat_id_neptune
           title: ""
           message: "\U0001F6E1 Saturn alarm has been disarmed (Full Set)"
 

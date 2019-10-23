@@ -1,86 +1,90 @@
-- type: entities
-  title: Zones
-  show_header_toggle: false
-  entities:
-    - type: custom:mini-media-player
-      entity: media_player.lounge
-      group: true
-      hide:
-        controls: true
-      
-    - type: custom:mini-media-player
-      entity: media_player.dining_room
-      group: true
-      hide:
-        controls: true
+title: Music
+icon: mdi:itunes
+path: music
+cards: 
+  - type: entities
+    title: Zones
+    show_header_toggle: false
+    entities:
+      - type: custom:mini-media-player
+        entity: media_player.lounge
+        group: true
+        hide:
+          controls: true
+        
+      - type: custom:mini-media-player
+        entity: media_player.dining_room
+        group: true
+        hide:
+          controls: true
 
-    - type: custom:mini-media-player
-      entity: media_player.kitchen
-      group: true
-      hide:
-        controls: true
+      - type: custom:mini-media-player
+        entity: media_player.kitchen
+        group: true
+        hide:
+          controls: true
 
-    - type: custom:mini-media-player
-      entity: media_player.bedroom
-      group: true
-      hide:
-        controls: true
+      - type: custom:mini-media-player
+        entity: media_player.bedroom
+        group: true
+        hide:
+          controls: true
 
-    - type: custom:mini-media-player
-      entity: media_player.kids_room
-      group: true
-      hide:
-        controls: true
+      - type: custom:mini-media-player
+        entity: media_player.kids_room
+        group: true
+        hide:
+          controls: true
 
-    - type: custom:mini-media-player
-      entity: media_player.study
-      group: true
-      hide:
-        controls: true
+      - type: custom:mini-media-player
+        entity: media_player.study
+        group: true
+        hide:
+          controls: true
 
-    - type: custom:mini-media-player
-      entity: media_player.guest_room
-      group: true
-      hide:
-        controls: true
+      - type: custom:mini-media-player
+        entity: media_player.guest_room
+        group: true
+        hide:
+          controls: true
 
-    - type: divider
-      style:
-        height: 1px
-        background: '#dcdcdc'
+      - type: divider
+        style:
+          height: 1px
+          background: '#dcdcdc'
 
-    - type: weblink
-      url: http://192.168.1.31/CasaTunes
-      icon: mdi:itunes
-      name: CasaTunes
+      - type: weblink
+        url: http://192.168.1.31/CasaTunes
+        icon: mdi:itunes
+        name: CasaTunes
 
-    - type: weblink
-      url: http://192.168.1.31/CasaSetup
-      icon: mdi:settings
-      name: CasaSetup
+      - type: weblink
+        url: http://192.168.1.31/CasaSetup
+        icon: mdi:settings
+        name: CasaSetup
 
-    - type: weblink
-      url: http://192.168.1.32/
-      icon: mdi:amplifier
-      name: Denon AVR
+      - type: weblink
+        url: http://192.168.1.32/
+        icon: mdi:amplifier
+        name: Denon AVR
 
-- type: custom:mini-media-player
-  entity: media_player.alexey_s_player
-  source: icon
-  hide:
-    volume: true
-    power: true
+  - type: custom:mini-media-player
+    entity: media_player.alexey_s_player
+    source: icon
+    hide:
+      volume: true
+      power: true
 
-- type: custom:mini-media-player
-  entity: media_player.marina_s_player
-  source: icon
-  hide:
-    volume: true
-    power: true
+  - type: custom:mini-media-player
+    entity: media_player.marina_s_player
+    source: icon
+    hide:
+      volume: true
+      power: true
 
-- type: custom:mini-media-player
-  entity: media_player.maria_s_player
-  source: icon
-  hide:
-    volume: true
-    power: true
+  - type: custom:mini-media-player
+    entity: media_player.maria_s_player
+    source: icon
+    hide:
+      volume: true
+      power: true

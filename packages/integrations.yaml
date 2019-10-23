@@ -27,7 +27,7 @@ telegram_bot:
     allowed_chat_ids:
       - !secret telegram_chat_id_alexey
       - !secret telegram_chat_id_marina
-      - !secret telegram_chat_id_parents
+      - !secret telegram_chat_id_neptune
 
 homekit:
   filter:

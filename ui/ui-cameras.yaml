@@ -1,95 +1,99 @@
-- type: picture-entity
-  entity: camera.front_gate
-  camera_view: live
-  aspect_ratio: 4x3
-  show_name: false
-  show_state: false
+title: Cameras
+icon: mdi:cctv
+path: cameras
+cards: 
+  - type: picture-entity
+    entity: camera.front_gate
+    camera_view: live
+    aspect_ratio: 4x3
+    show_name: false
+    show_state: false
 
-- type: picture-entity
-  entity: camera.front_door
-  camera_view: live
-  aspect_ratio: 4x3
-  show_name: false
-  show_state: false
+  - type: picture-entity
+    entity: camera.front_door
+    camera_view: live
+    aspect_ratio: 4x3
+    show_name: false
+    show_state: false
 
-- type: picture-entity
-  entity: camera.kitchen_side
-  camera_view: live
-  aspect_ratio: 16x9
-  show_name: false
-  show_state: false
+  - type: picture-entity
+    entity: camera.kitchen_side
+    camera_view: live
+    aspect_ratio: 16x9
+    show_name: false
+    show_state: false
 
-- type: picture-entity
-  entity: camera.porch_roof
-  camera_view: live
-  aspect_ratio: 16x9
-  show_name: false
-  show_state: false
+  - type: picture-entity
+    entity: camera.porch_roof
+    camera_view: live
+    aspect_ratio: 16x9
+    show_name: false
+    show_state: false
 
-- type: picture-entity
-  entity: camera.kitchen_roof
-  camera_view: live
-  aspect_ratio: 16x9
-  show_name: false
-  show_state: false
+  - type: picture-entity
+    entity: camera.kitchen_roof
+    camera_view: live
+    aspect_ratio: 16x9
+    show_name: false
+    show_state: false
 
-- type: picture-entity
-  entity: camera.side_passage
-  camera_view: live
-  aspect_ratio: 16x9
-  show_name: false
-  show_state: false
+  - type: picture-entity
+    entity: camera.side_passage
+    camera_view: live
+    aspect_ratio: 16x9
+    show_name: false
+    show_state: false
 
-- type: picture-entity
-  entity: camera.back_garden
-  camera_view: live
-  aspect_ratio: 16x9
-  show_name: false
-  show_state: false
+  - type: picture-entity
+    entity: camera.back_garden
+    camera_view: live
+    aspect_ratio: 16x9
+    show_name: false
+    show_state: false
 
-- type: picture-entity
-  entity: camera.neptune_front_right
-  camera_view: live
-  aspect_ratio: 16x9
-  show_name: false
-  show_state: false
+  - type: picture-entity
+    entity: camera.neptune_front_right
+    camera_view: live
+    aspect_ratio: 16x9
+    show_name: false
+    show_state: false
 
-- type: picture-entity
-  entity: camera.neptune_front_left
-  camera_view: live
-  aspect_ratio: 16x9
-  show_name: false
-  show_state: false
+  - type: picture-entity
+    entity: camera.neptune_front_left
+    camera_view: live
+    aspect_ratio: 16x9
+    show_name: false
+    show_state: false
 
-- type: picture-entity
-  entity: camera.neptune_patio
-  camera_view: live
-  aspect_ratio: 16x9
-  show_name: false
-  show_state: false
+  - type: picture-entity
+    entity: camera.neptune_patio
+    camera_view: live
+    aspect_ratio: 16x9
+    show_name: false
+    show_state: false
 
-- type: picture-entity
-  entity: camera.neptune_back_garden
-  camera_view: live
-  aspect_ratio: 16x9
-  show_name: false
-  show_state: false
+  - type: picture-entity
+    entity: camera.neptune_back_garden
+    camera_view: live
+    aspect_ratio: 16x9
+    show_name: false
+    show_state: false
 
-- type: picture-entity
-  entity: camera.neptune_side_passage
-  camera_view: live
-  aspect_ratio: 16x9
-  show_name: false
-  show_state: false
+  - type: picture-entity
+    entity: camera.neptune_side_passage
+    camera_view: live
+    aspect_ratio: 16x9
+    show_name: false
+    show_state: false
 
-- type: picture-entity
-  entity: camera.jupiter_hallway
-  aspect_ratio: 16x9
-  show_name: false
-  show_state: false
+  - type: picture-entity
+    entity: camera.jupiter_hallway
+    aspect_ratio: 16x9
+    show_name: false
+    show_state: false
 
-- type: picture-entity
-  entity: camera.jupiter_lounge
-  aspect_ratio: 16x9
-  show_name: false
-  show_state: false
+  - type: picture-entity
+    entity: camera.jupiter_lounge
+    aspect_ratio: 16x9
+    show_name: false
+    show_state: false

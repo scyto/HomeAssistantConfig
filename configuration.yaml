@@ -27,6 +27,8 @@ system_health:
 config:
 logger:
 recorder:
+  purge_keep_days: 30
+  db_url: !secret db_url
 history: !include history.yaml
 cloud:
 stream:

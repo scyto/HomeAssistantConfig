@@ -60,7 +60,7 @@ automation:
       - service: telegram_bot.send_photo
         data_template:
           target:
-            - !secret telegram_chat_id_parents
+            - !secret telegram_chat_id_neptune
           url: "http://localhost:8123{{ states.camera[{
             '1' : 'neptune_front_left',
             '2' : 'neptune_front_right',
@@ -118,6 +118,6 @@ automation:
       - service: telegram_bot.send_video
         data_template:
           target:
-            - !secret telegram_chat_id_parents
+            - !secret telegram_chat_id_neptune
           file: "{{ trigger.event.data.path }}"
           caption: "Movement in {{ state_attr('binary_sensor.neptune_nvr_line_crossing_' + trigger.event.data.file[-5:-4], 'friendly_name') }}"

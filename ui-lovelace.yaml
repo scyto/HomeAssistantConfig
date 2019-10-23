@@ -2,37 +2,10 @@ title: Saturn
 resources: !include ui/resources.yaml
 popup_cards: !include ui/popup_cards.yaml
 views:
-  - title: Overview
-    icon: mdi:home
-    path: overview
-    cards: !include ui/ui-overview.yaml
-
-  - title: Security
-    icon: mdi:shield-half-full
-    path: security
-    cards: !include ui/ui-security.yaml
-
-  - title: Cameras
-    icon: mdi:cctv
-    path: cameras
-    cards: !include ui/ui-cameras.yaml
-
-  - title: Music
-    icon: mdi:itunes
-    path: music
-    cards: !include ui/ui-music.yaml
-
-  - title: Heating
-    icon: mdi:thermometer
-    path: heating
-    cards: !include ui/ui-heating.yaml
-
-  - title: Rooms
-    icon: mdi:floor-plan
-    path: rooms
-    cards: !include ui/ui-rooms.yaml
-
-  - title: Admin
-    icon: mdi:code-tags
-    path: admin
-    cards: !include ui/ui-admin.yaml
+  - !include ui/ui-overview.yaml
+  - !include ui/ui-security.yaml
+  - !include ui/ui-cameras.yaml
+  - !include ui/ui-music.yaml
+  - !include ui/ui-heating.yaml
+  - !include ui/ui-rooms.yaml
+  - !include ui/ui-admin.yaml

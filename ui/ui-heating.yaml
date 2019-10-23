@@ -1,157 +1,161 @@
-- type: vertical-stack
-  cards:
-    - type: entities
-      title: Heating
-      show_header_toggle: false
-      entities:
-        - input_select.climate_mode
-        - type: section
-          label: Areas
-        - type: custom:fold-entity-row
-          head:
-            type: entity
-            entity: sensor.upstairs_temperature
-            name: Upstrairs
-            icon: mdi:radiator
-          items:
-            - entity: binary_sensor.upstairs_ufh_pump
-              name: UFH Pump
-              icon: mdi:engine
-            - type: divider
-              style:
-                height: 1px
-                background: '#dcdcdc'
-            - climate.landing
-            - climate.master_bedroom
-            - climate.master_bathroom
-            - climate.kids_room
-            - climate.study
-            - climate.guest_room
-            - climate.bathroom
+title: Heating
+icon: mdi:thermometer
+path: heating
+cards: 
+  - type: vertical-stack
+    cards:
+      - type: entities
+        title: Heating
+        show_header_toggle: false
+        entities:
+          - input_select.climate_mode
+          - type: section
+            label: Areas
+          - type: custom:fold-entity-row
+            head:
+              type: entity
+              entity: sensor.upstairs_temperature
+              name: Upstrairs
+              icon: mdi:radiator
+            items:
+              - entity: binary_sensor.upstairs_ufh_pump
+                name: UFH Pump
+                icon: mdi:engine
+              - type: divider
+                style:
+                  height: 1px
+                  background: '#dcdcdc'
+              - climate.landing
+              - climate.master_bedroom
+              - climate.master_bathroom
+              - climate.kids_room
+              - climate.study
+              - climate.guest_room
+              - climate.bathroom
 
-        - type: custom:fold-entity-row
-          head: 
-            type: entity
-            entity: sensor.downstairs_temperature
-            name: Downstrairs
-            icon: mdi:radiator
-          items:
-            - entity: binary_sensor.downstrairs_ufh_pump
-              name: UFH Pump
-              icon: mdi:engine
-            - type: divider
-              style:
-                height: 1px
-                background: '#dcdcdc'
-            - climate.hallway
-            - climate.av_room
-            - climate.lounge
-            - climate.dining_room
-            - climate.kitchen
+          - type: custom:fold-entity-row
+            head: 
+              type: entity
+              entity: sensor.downstairs_temperature
+              name: Downstrairs
+              icon: mdi:radiator
+            items:
+              - entity: binary_sensor.downstrairs_ufh_pump
+                name: UFH Pump
+                icon: mdi:engine
+              - type: divider
+                style:
+                  height: 1px
+                  background: '#dcdcdc'
+              - climate.hallway
+              - climate.av_room
+              - climate.lounge
+              - climate.dining_room
+              - climate.kitchen
 
-        - type: custom:fold-entity-row
-          head: 
-            type: section
-            label: Schedule
-          items:
-            - input_boolean.heating_schedule
-            - type: custom:fold-entity-row
-              head:      
-                type: section
-                label: Weekdays
-              items:
-                - input_datetime.weekdays_comfort
-                - input_datetime.weekdays_sleep
-            - type: custom:fold-entity-row
-              head:      
-                type: section
-                label: Weekends
-              items:
-                - input_datetime.weekends_comfort
-                - input_datetime.weekends_sleep
-    
-    - type: entities
-      title: Hot water
-      show_header_toggle: false
-      entities:
-        - entity: switch.hot_water
-          icon: mdi:shower
-        - type: custom:fold-entity-row
-          head: 
-            type: section
-            label: Schedule
-          items:
-            - input_boolean.hot_water_schedule
-            - type: custom:fold-entity-row
-              head:      
-                type: section
-                label: Weekdays
-              items:
-                - input_datetime.weekdays_am_hot_water_on
-                - input_datetime.weekdays_am_hot_water_off
-                - input_datetime.weekdays_pm_hot_water_on
-                - input_datetime.weekdays_pm_hot_water_off
-            - type: custom:fold-entity-row
-              head:      
-                type: section
-                label: Weekends
-              items:
-                - input_datetime.weekends_am_hot_water_on
-                - input_datetime.weekends_am_hot_water_off
-                - input_datetime.weekends_pm_hot_water_on
-                - input_datetime.weekends_pm_hot_water_off
+          - type: custom:fold-entity-row
+            head: 
+              type: section
+              label: Schedule
+            items:
+              - input_boolean.heating_schedule
+              - type: custom:fold-entity-row
+                head:      
+                  type: section
+                  label: Weekdays
+                items:
+                  - input_datetime.weekdays_comfort
+                  - input_datetime.weekdays_sleep
+              - type: custom:fold-entity-row
+                head:      
+                  type: section
+                  label: Weekends
+                items:
+                  - input_datetime.weekends_comfort
+                  - input_datetime.weekends_sleep
+      
+      - type: entities
+        title: Hot water
+        show_header_toggle: false
+        entities:
+          - entity: switch.hot_water
+            icon: mdi:shower
+          - type: custom:fold-entity-row
+            head: 
+              type: section
+              label: Schedule
+            items:
+              - input_boolean.hot_water_schedule
+              - type: custom:fold-entity-row
+                head:      
+                  type: section
+                  label: Weekdays
+                items:
+                  - input_datetime.weekdays_am_hot_water_on
+                  - input_datetime.weekdays_am_hot_water_off
+                  - input_datetime.weekdays_pm_hot_water_on
+                  - input_datetime.weekdays_pm_hot_water_off
+              - type: custom:fold-entity-row
+                head:      
+                  type: section
+                  label: Weekends
+                items:
+                  - input_datetime.weekends_am_hot_water_on
+                  - input_datetime.weekends_am_hot_water_off
+                  - input_datetime.weekends_pm_hot_water_on
+                  - input_datetime.weekends_pm_hot_water_off
 
-    - type: entities
-      title: Towel rails
-      show_header_toggle: false
-      entities:
-        - entity: switch.towel_rails
-          icon: mdi:reorder-horizontal
-        - type: custom:fold-entity-row
-          head: 
-            type: section
-            label: Schedule
-          items:
-            - input_boolean.towel_rails_schedule
-            - type: custom:fold-entity-row
-              head:      
-                type: section
-                label: Weekdays
-              items:
-                - input_datetime.weekdays_am_towel_rails_on
-                - input_datetime.weekdays_am_towel_rails_off
-                - input_datetime.weekdays_pm_towel_rails_on
-                - input_datetime.weekdays_pm_towel_rails_off
-            - type: custom:fold-entity-row
-              head:      
-                type: section
-                label: Weekends
-              items:
-                - input_datetime.weekends_am_towel_rails_on
-                - input_datetime.weekends_am_towel_rails_off
-                - input_datetime.weekends_pm_towel_rails_on
-                - input_datetime.weekends_pm_towel_rails_off
+      - type: entities
+        title: Towel rails
+        show_header_toggle: false
+        entities:
+          - entity: switch.towel_rails
+            icon: mdi:reorder-horizontal
+          - type: custom:fold-entity-row
+            head: 
+              type: section
+              label: Schedule
+            items:
+              - input_boolean.towel_rails_schedule
+              - type: custom:fold-entity-row
+                head:      
+                  type: section
+                  label: Weekdays
+                items:
+                  - input_datetime.weekdays_am_towel_rails_on
+                  - input_datetime.weekdays_am_towel_rails_off
+                  - input_datetime.weekdays_pm_towel_rails_on
+                  - input_datetime.weekdays_pm_towel_rails_off
+              - type: custom:fold-entity-row
+                head:      
+                  type: section
+                  label: Weekends
+                items:
+                  - input_datetime.weekends_am_towel_rails_on
+                  - input_datetime.weekends_am_towel_rails_off
+                  - input_datetime.weekends_pm_towel_rails_on
+                  - input_datetime.weekends_pm_towel_rails_off
 
-- type: vertical-stack
-  cards:
-    - type: horizontal-stack
-      cards:
-        - type: custom:mini-graph-card
-          name: Upstrais
-          entities:
-            - sensor.upstairs_temperature
+  - type: vertical-stack
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            name: Upstrais
+            entities:
+              - sensor.upstairs_temperature
 
-        - type: custom:mini-graph-card
-          name: Downstairs
-          entities:
-            - sensor.downstairs_temperature
+          - type: custom:mini-graph-card
+            name: Downstairs
+            entities:
+              - sensor.downstairs_temperature
 
-#- type: horizontal-stack
-#  cards:
-#    - type: sensor
-#      entity: sensor.gas_usage_this_month
-#      name: Gas
-#
-#    - type: sensor
-#      entity: sensor.power_usage_this_month
-#      name: Power
+  #- type: horizontal-stack
+  #  cards:
+  #    - type: sensor
+  #      entity: sensor.gas_usage_this_month
+  #      name: Gas
+  #
+  #    - type: sensor
+  #      entity: sensor.power_usage_this_month
+  #      name: Power

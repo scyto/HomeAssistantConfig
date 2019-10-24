@@ -12,6 +12,54 @@ input_boolean:
     icon: mdi:shield-home
 
 automation:
+  - alias: Alarm outside armed
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      - platform: state
+        entity_id: input_boolean.alarm_outside
+        from: 'off'
+        to: 'on'
+    action:
+      - service: telegram_bot.send_message
+        data_template:
+          target:
+            - !secret telegram_chat_id_alexey
+            - !secret telegram_chat_id_marina   
+          title: ""
+          message: "\U0001F6E1 Alarm has been armed (Outside)"
+      - service: telegram_bot.send_message
+        data_template:
+          target:
+            - !secret telegram_chat_id_neptune
+          disable_notification: true 
+          title: ""
+          message: "\U0001F6E1 Saturn alarm has been armed (Outside)"
+
+  - alias: Alarm outside disarmed
+    initial_state: 'on'
+    hide_entity: true
+    trigger:
+      - platform: state
+        entity_id: input_boolean.alarm_outside
+        from: 'on'
+        to: 'off'
+    action:
+      - service: telegram_bot.send_message
+        data_template:
+          target:
+            - !secret telegram_chat_id_alexey
+            - !secret telegram_chat_id_marina
+          disable_notification: true   
+          title: ""
+          message: "\U0001F6E1 Alarm has been disarmed (Outside)"
+      - service: telegram_bot.send_message
+        data_template:
+          target:
+            - !secret telegram_chat_id_neptune 
+          title: ""
+          message: "\U0001F6E1 Saturn alarm has been disarmed (Outside)"
+
   - alias: Alarm night set armed
     initial_state: 'on'
     hide_entity: true

@@ -9,7 +9,6 @@ homeassistant:
     media_player.bravia_4k_2015:
       friendly_name: Lounge TV  
 
-
 light:
   - platform: knx
     name: Lounge spotlights (front left) 
@@ -66,6 +65,10 @@ sensor:
     type: percent
     state_address: 4/1/4
 
+input_boolean:
+  lounge_floor_lamp_auto:
+    name: Floor lamp auto
+
 media_player:
   - platform: denon
     name: AV Receiver
@@ -97,8 +100,10 @@ automation:
           entity_id: sensor.lounge_illumination
           below: 10
     action:
-      service: light.turn_on
-      entity_id: light.lounge_floor_lamp
+      - service: light.turn_on
+        entity_id: light.lounge_floor_lamp
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.lounge_floor_lamp_auto
   
   - alias: Lounge lights off
     initial_state: 'on'
@@ -112,11 +117,13 @@ automation:
         minutes: 2
     condition:
       condition: state
-      entity_id: media_player.lounge_tv
-      state: 'off'
+      entity_id: input_boolean.lounge_floor_lamp_auto
+      state: 'on'
     action:
-      service: light.turn_off
-      entity_id: light.lounge_floor_lamp
+      - service: light.turn_off
+        entity_id: light.lounge_floor_lamp
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.lounge_floor_lamp_auto
 
   - alias: Lounge cube flip 90
     initial_state: 'on'
@@ -128,8 +135,10 @@ automation:
         entity_id: binary_sensor.lounge_cube
         action_type: flip90
     action:
-      service: homeassistant.toggle
-      entity_id: light.lounge_floor_lamp
+      - service: light.toggle
+        entity_id: light.lounge_floor_lamp
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.lounge_floor_lamp_auto
     
   - alias: Lounge cube tap twice
     initial_state: 'on'
